@@ -8,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ABI40_0_0EXScopedNotificationSchedulerModule : ABI40_0_0EXNotificationSchedulerModule
 
-- (instancetype)initWithExperienceScopeKey:(NSString *)experienceScopeKey;
+- (instancetype)initWithScopeKey:(NSString *)scopeKey;
 
 @end
 

@@ -6,7 +6,7 @@
 
 - (ABI39_0_0UMModuleRegistry *)moduleRegistryForParams:(NSDictionary *)params
                   forExperienceStableLegacyId:(NSString *)experienceStableLegacyId
-                           experienceScopeKey:(NSString *)experienceScopeKey
+                           scopeKey:(NSString *)scopeKey
                            withKernelServices:(NSDictionary *)kernelServices;
 
 @end

@@ -5,34 +5,33 @@
 
 @implementation EXScopedNotificationCategoryMigrator
 
-+ (void)migrateLegacyScopedCategoryIdentifiersForProjectWithExperienceStableLegacyId:(NSString *)experienceStableLegacyId
-                                                                  experienceScopeKey:(NSString *)experienceScopeKey
++ (void)migrateLegacyScopedCategoryIdentifiersForProjectWithScopeKey:(NSString *)scopeKey
 {
-  [EXScopedNotificationCategoryMigrator renameLegacyCategoryIdentifiersForExperienceWithStableLegacyId:experienceStableLegacyId withBlock:^(UNNotificationCategory *oldCategory) {
-    NSString *unscopedLegacyCategoryId = [EXScopedNotificationsUtils unscopedLegacyCategoryIdentifierWithId:oldCategory.identifier forExperienceStableLegacyId:experienceStableLegacyId];
+  [EXScopedNotificationCategoryMigrator renameLegacyCategoryIdentifiersForExperienceWithScopeKey:scopeKey withBlock:^(UNNotificationCategory *oldCategory) {
+    NSString *unscopedLegacyCategoryId = [EXScopedNotificationsUtils unscopedLegacyCategoryIdentifierWithId:oldCategory.identifier forScopeKey:scopeKey];
     NSString *newCategoryId = [EXScopedNotificationsUtils scopedIdentifierFromId:unscopedLegacyCategoryId
-                                                                   forExperience:experienceScopeKey];
+                                                                   forExperience:scopeKey];
     UNNotificationCategory *newCategory = [EXScopedNotificationCategoryMigrator createNewCategoryFrom:oldCategory withNewIdentifier:newCategoryId];
     return newCategory;
   }];
 }
 
-+ (void)unscopeLegacyCategoryIdentifiersForProjectWithExperienceStableLegacyId:(NSString *)experienceStableLegacyId
++ (void)unscopeLegacyCategoryIdentifiersForProjectWithScopeKey:(NSString *)scopeKey
 {
-  [EXScopedNotificationCategoryMigrator renameLegacyCategoryIdentifiersForExperienceWithStableLegacyId:experienceStableLegacyId withBlock:^(UNNotificationCategory *oldCategory) {
-    NSString *unscopedCategoryId = [EXScopedNotificationsUtils unscopedLegacyCategoryIdentifierWithId:oldCategory.identifier forExperienceStableLegacyId:experienceStableLegacyId];
+  [EXScopedNotificationCategoryMigrator renameLegacyCategoryIdentifiersForExperienceWithScopeKey:scopeKey withBlock:^(UNNotificationCategory *oldCategory) {
+    NSString *unscopedCategoryId = [EXScopedNotificationsUtils unscopedLegacyCategoryIdentifierWithId:oldCategory.identifier forScopeKey:scopeKey];
     UNNotificationCategory *newCategory = [EXScopedNotificationCategoryMigrator createNewCategoryFrom:oldCategory withNewIdentifier:unscopedCategoryId];
     return newCategory;
   }];
 }
 
-+ (void)renameLegacyCategoryIdentifiersForExperienceWithStableLegacyId:(NSString *)experienceStableLegacyId withBlock:(UNNotificationCategory *(^)(UNNotificationCategory *category))renameCategoryBlock
++ (void)renameLegacyCategoryIdentifiersForExperienceWithScopeKey:(NSString *)scopeKey withBlock:(UNNotificationCategory *(^)(UNNotificationCategory *category))renameCategoryBlock
 {
   [[UNUserNotificationCenter currentNotificationCenter] getNotificationCategoriesWithCompletionHandler:^(NSSet<UNNotificationCategory *> *categories) {
     NSMutableSet<UNNotificationCategory *> *newCategories = [categories mutableCopy];
     BOOL didChangeCategories = NO;
     for (UNNotificationCategory *previousCategory in categories) {
-      if ([EXScopedNotificationsUtils isLegacyCategoryId:previousCategory.identifier scopedByExperienceStableLegacyId:experienceStableLegacyId]) {
+      if ([EXScopedNotificationsUtils isLegacyCategoryId:previousCategory.identifier scopedByScopeKey:scopeKey]) {
         UNNotificationCategory *newCategory = renameCategoryBlock(previousCategory);
         [newCategories removeObject:previousCategory];
         [newCategories addObject:newCategory];

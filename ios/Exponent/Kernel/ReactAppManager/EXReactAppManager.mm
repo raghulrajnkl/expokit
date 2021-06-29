@@ -299,8 +299,8 @@ typedef void (^SDK21RCTSourceLoadBlock)(NSError *error, NSData *source, int64_t 
 - (void)loadSourceForBridge:(RCTBridge *)bridge withBlock:(RCTSourceLoadBlock)loadCallback
 {
   // clear any potentially old loading state
-  if (_appRecord.experienceScopeKey) {
-    [[EXKernel sharedInstance].serviceRegistry.errorRecoveryManager setError:nil forExperienceScopeKey:_appRecord.experienceScopeKey];
+  if (_appRecord.scopeKey) {
+    [[EXKernel sharedInstance].serviceRegistry.errorRecoveryManager setError:nil forScopeKey:_appRecord.scopeKey];
   }
   [self _stopObservingBridgeNotifications];
   [self _startObservingBridgeNotificationsForBridge:bridge];
@@ -309,8 +309,8 @@ typedef void (^SDK21RCTSourceLoadBlock)(NSError *error, NSData *source, int64_t 
     if ([_appRecord.appLoader supportsBundleReload]) {
       [_appRecord.appLoader forceBundleReload];
     } else {
-      NSAssert(_appRecord.experienceScopeKey, @"EXKernelAppRecord.experienceScopeKey should be nonnull if we have a manifest with developer tools enabled");
-      [[EXKernel sharedInstance] reloadAppWithExperienceScopeKey:_appRecord.experienceScopeKey];
+      NSAssert(_appRecord.scopeKey, @"EXKernelAppRecord.scopeKey should be nonnull if we have a manifest with developer tools enabled");
+      [[EXKernel sharedInstance] reloadAppWithScopeKey:_appRecord.scopeKey];
     }
   }
 
@@ -346,8 +346,8 @@ typedef void (^SDK21RCTSourceLoadBlock)(NSError *error, NSData *source, int64_t 
 {
   // RN is going to call RCTFatal() on this error, so keep a reference to it for later
   // so we can distinguish this non-fatal error from actual fatal cases.
-  if (_appRecord.experienceScopeKey) {
-    [[EXKernel sharedInstance].serviceRegistry.errorRecoveryManager setError:error forExperienceScopeKey:_appRecord.experienceScopeKey];
+  if (_appRecord.scopeKey) {
+    [[EXKernel sharedInstance].serviceRegistry.errorRecoveryManager setError:error forScopeKey:_appRecord.scopeKey];
   }
 
   // react won't post this for us
@@ -432,8 +432,8 @@ typedef void (^SDK21RCTSourceLoadBlock)(NSError *error, NSData *source, int64_t 
     }
   } else if ([notification.name isEqualToString:[self versionedString:RCTJavaScriptDidFailToLoadNotification]]) {
     NSError *error = (notification.userInfo) ? notification.userInfo[@"error"] : nil;
-    if (_appRecord.experienceScopeKey) {
-      [[EXKernel sharedInstance].serviceRegistry.errorRecoveryManager setError:error forExperienceScopeKey:_appRecord.experienceScopeKey];
+    if (_appRecord.scopeKey) {
+      [[EXKernel sharedInstance].serviceRegistry.errorRecoveryManager setError:error forScopeKey:_appRecord.scopeKey];
     }
 
     UM_WEAKIFY(self);
@@ -547,8 +547,8 @@ typedef void (^SDK21RCTSourceLoadBlock)(NSError *error, NSData *source, int64_t 
   UM_WEAKIFY(self);
   dispatch_async(dispatch_get_main_queue(), ^{
     UM_ENSURE_STRONGIFY(self);
-    if (self.appRecord.experienceScopeKey) {
-      [[EXKernel sharedInstance].serviceRegistry.errorRecoveryManager experienceFinishedLoadingWithScopeKey:self.appRecord.experienceScopeKey];
+    if (self.appRecord.scopeKey) {
+      [[EXKernel sharedInstance].serviceRegistry.errorRecoveryManager experienceFinishedLoadingWithScopeKey:self.appRecord.scopeKey];
     }
     [self.delegate reactAppManagerFinishedLoadingJavaScript:self];
   });
@@ -757,10 +757,10 @@ typedef void (^SDK21RCTSourceLoadBlock)(NSError *error, NSData *source, int64_t 
   NSMutableDictionary *props = [NSMutableDictionary dictionary];
   NSMutableDictionary *expProps = [NSMutableDictionary dictionary];
 
-  NSAssert(_appRecord.experienceScopeKey, @"Experience id should be nonnull when getting initial properties for root view");
+  NSAssert(_appRecord.scopeKey, @"Experience scope key should be nonnull when getting initial properties for root view");
 
-  NSDictionary *errorRecoveryProps = [[EXKernel sharedInstance].serviceRegistry.errorRecoveryManager developerInfoForExperienceScopeKey:_appRecord.experienceScopeKey];
-  if ([[EXKernel sharedInstance].serviceRegistry.errorRecoveryManager experienceScopeKeyIsRecoveringFromError:_appRecord.experienceScopeKey]) {
+  NSDictionary *errorRecoveryProps = [[EXKernel sharedInstance].serviceRegistry.errorRecoveryManager developerInfoForScopeKey:_appRecord.scopeKey];
+  if ([[EXKernel sharedInstance].serviceRegistry.errorRecoveryManager scopeKeyIsRecoveringFromError:_appRecord.scopeKey]) {
     [[EXKernel sharedInstance].serviceRegistry.errorRecoveryManager increaseAutoReloadBuffer];
     if (errorRecoveryProps) {
       expProps[@"errorRecovery"] = errorRecoveryProps;
@@ -815,18 +815,18 @@ typedef void (^SDK21RCTSourceLoadBlock)(NSError *error, NSData *source, int64_t 
 
 - (NSString *)scopedDocumentDirectory
 {
-  NSString *escapedExperienceScopeKey = [self escapedResourceName:_appRecord.experienceScopeKey];
+  NSString *escapedScopeKey = [self escapedResourceName:_appRecord.scopeKey];
   NSString *mainDocumentDirectory = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
   NSString *exponentDocumentDirectory = [mainDocumentDirectory stringByAppendingPathComponent:@"ExponentExperienceData"];
-  return [[exponentDocumentDirectory stringByAppendingPathComponent:escapedExperienceScopeKey] stringByStandardizingPath];
+  return [[exponentDocumentDirectory stringByAppendingPathComponent:escapedScopeKey] stringByStandardizingPath];
 }
 
 - (NSString *)scopedCachesDirectory
 {
-  NSString *escapedExperienceScopeKey = [self escapedResourceName:_appRecord.experienceScopeKey];
+  NSString *escapedScopeKey = [self escapedResourceName:_appRecord.scopeKey];
   NSString *mainCachesDirectory = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject;
   NSString *exponentCachesDirectory = [mainCachesDirectory stringByAppendingPathComponent:@"ExponentExperienceData"];
-  return [[exponentCachesDirectory stringByAppendingPathComponent:escapedExperienceScopeKey] stringByStandardizingPath];
+  return [[exponentCachesDirectory stringByAppendingPathComponent:escapedScopeKey] stringByStandardizingPath];
 }
 
 - (void *)jsExecutorFactoryForBridge:(id)bridge

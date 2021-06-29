@@ -10,26 +10,26 @@
   return @"ExponentScopedEventEmitter";
 }
 
-+ (NSString *)getExperienceScopeKeyFromEventEmitter:(id)eventEmitter
++ (NSString *)getScopeKeyFromEventEmitter:(id)eventEmitter
 {
   if (eventEmitter) {
-    return ((EXScopedEventEmitter *)eventEmitter).experienceScopeKey;
+    return ((EXScopedEventEmitter *)eventEmitter).scopeKey;
   }
   return nil;
 }
 
-- (instancetype)initWithExperienceStableLegacyId:(NSString *)experienceStableLegacyId experienceScopeKey:(NSString *)experienceScopeKey kernelServiceDelegate:(id)kernelServiceInstance params:(NSDictionary *)params
+- (instancetype)initWithExperienceStableLegacyId:(NSString *)experienceStableLegacyId scopeKey:(NSString *)scopeKey kernelServiceDelegate:(id)kernelServiceInstance params:(NSDictionary *)params
 {
   if (self = [super init]) {
-    _experienceScopeKey = experienceScopeKey;
+    _scopeKey = scopeKey;
   }
   return self;
 }
 
-- (instancetype)initWithExperienceStableLegacyId:(NSString *)experienceStableLegacyId experienceScopeKey:(NSString *)experienceScopeKey kernelServiceDelegates:(NSDictionary *)kernelServiceInstances params:(NSDictionary *)params
+- (instancetype)initWithExperienceStableLegacyId:(NSString *)experienceStableLegacyId scopeKey:(NSString *)scopeKey kernelServiceDelegates:(NSDictionary *)kernelServiceInstances params:(NSDictionary *)params
 {
   if (self = [super init]) {
-    _experienceScopeKey = experienceScopeKey;
+    _scopeKey = scopeKey;
   }
   return self;
 }

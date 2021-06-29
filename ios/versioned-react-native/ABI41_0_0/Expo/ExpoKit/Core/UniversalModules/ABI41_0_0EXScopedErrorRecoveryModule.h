@@ -5,7 +5,7 @@
 
 @interface ABI41_0_0EXScopedErrorRecoveryModule : ABI41_0_0EXErrorRecoveryModule
 
-- (instancetype)initWithExperienceScopeKey:(NSString *)experienceScopeKey;
+- (instancetype)initWithScopeKey:(NSString *)scopeKey;
 
 @end
 

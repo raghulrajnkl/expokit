@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)scopeKey;
 
 /**
- * A stable UUID for this Expo project. Should be used to call Expo APIs where possible.
+ * A stable UUID for this EAS project. Should be used to call EAS APIs where possible.
  */
 - (nullable NSString *)projectId;
 

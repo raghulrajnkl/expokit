@@ -48,11 +48,11 @@ ABI39_0_0EX_EXPORT_SCOPED_MULTISERVICE_MODULE(ExponentNotifications, @"RemoteNot
 }
 
 - (instancetype)initWithExperienceStableLegacyId:(NSString *)experienceStableLegacyId
-                              experienceScopeKey:(NSString *)experienceScopeKey
+                              scopeKey:(NSString *)scopeKey
                           kernelServiceDelegates:(NSDictionary *)kernelServiceInstances
                                           params:(NSDictionary *)params
 {
-  if (self = [super initWithExperienceStableLegacyId:experienceStableLegacyId experienceScopeKey:experienceScopeKey kernelServiceDelegate:kernelServiceInstances params:params]) {
+  if (self = [super initWithExperienceStableLegacyId:experienceStableLegacyId scopeKey:scopeKey kernelServiceDelegate:kernelServiceInstances params:params]) {
     _userNotificationCenter = kernelServiceInstances[@"UserNotificationCenter"];
     _remoteNotificationsDelegate = kernelServiceInstances[@"RemoteNotificationManager"];
     _notificationsIdentifiersManager = kernelServiceInstances[@"UserNotificationManager"];
@@ -215,8 +215,8 @@ ABI39_0_0RCT_EXPORT_METHOD(legacyScheduleLocalRepeatingNotification:(NSDictionar
   localNotification.applicationIconBadgeNumber = [ABI39_0_0RCTConvert NSInteger:payload[@"count"]] ?: 0;
   localNotification.userInfo = @{
                                  @"body": payload[@"data"],
-                                 @"experienceId": self.experienceScopeKey,
-                                 @"scopeKey": self.experienceScopeKey,
+                                 @"experienceId": self.scopeKey,
+                                 @"scopeKey": self.scopeKey,
                                  @"id": uniqueId
                                  };
   localNotification.fireDate = [ABI39_0_0RCTConvert NSDate:options[@"time"]] ?: [NSDate new];
@@ -260,7 +260,7 @@ ABI39_0_0RCT_REMAP_METHOD(cancelAllScheduledNotificationsAsync,
   [_userNotificationCenter getPendingNotificationRequestsWithCompletionHandler:^(NSArray<UNNotificationRequest *> * _Nonnull requests) {
     NSMutableArray<NSString *> *requestsToCancelIdentifiers = [NSMutableArray new];
     for (UNNotificationRequest *request in requests) {
-      if ([request.content.userInfo[@"experienceId"] isEqualToString:self.experienceScopeKey]) {
+      if ([request.content.userInfo[@"experienceId"] isEqualToString:self.scopeKey]) {
         [requestsToCancelIdentifiers addObject:request.identifier];
       }
     }
@@ -382,8 +382,8 @@ ABI39_0_0RCT_REMAP_METHOD(deleteCategoryAsync,
 
   content.userInfo = @{
                        @"body": payload[@"data"],
-                       @"experienceId": self.experienceScopeKey,
-                       @"scopeKey": self.experienceScopeKey,
+                       @"experienceId": self.scopeKey,
+                       @"scopeKey": self.scopeKey,
                        @"id": uniqueId
                        };
 
@@ -391,7 +391,7 @@ ABI39_0_0RCT_REMAP_METHOD(deleteCategoryAsync,
 }
 
 - (NSString *)internalIdForIdentifier:(NSString *)identifier {
-  return [_notificationsIdentifiersManager internalIdForIdentifier:identifier experienceScopeKey:self.experienceScopeKey];
+  return [_notificationsIdentifiersManager internalIdForIdentifier:identifier scopeKey:self.scopeKey];
 }
 
 - (UNCalendarNotificationTrigger *)notificationTriggerFor:(NSNumber * _Nullable)unixTime

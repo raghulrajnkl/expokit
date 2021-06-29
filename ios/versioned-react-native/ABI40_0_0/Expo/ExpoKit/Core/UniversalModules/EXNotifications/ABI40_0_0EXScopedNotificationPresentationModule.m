@@ -6,16 +6,16 @@
 
 @interface ABI40_0_0EXScopedNotificationPresentationModule ()
 
-@property (nonatomic, strong) NSString *experienceScopeKey;
+@property (nonatomic, strong) NSString *scopeKey;
 
 @end
 
 @implementation ABI40_0_0EXScopedNotificationPresentationModule
 
-- (instancetype)initWithExperienceScopeKey:(NSString *)experienceScopeKey
+- (instancetype)initWithScopeKey:(NSString *)scopeKey
 {
   if (self = [super init]) {
-    _experienceScopeKey = experienceScopeKey;
+    _scopeKey = scopeKey;
   }
 
   return self;
@@ -25,7 +25,7 @@
 {
   NSMutableArray *serializedNotifications = [NSMutableArray new];
   for (UNNotification *notification in notifications) {
-    if ([ABI40_0_0EXScopedNotificationsUtils shouldNotification:notification beHandledByExperience:_experienceScopeKey]) {
+    if ([ABI40_0_0EXScopedNotificationsUtils shouldNotification:notification beHandledByExperience:_scopeKey]) {
       [serializedNotifications addObject:[ABI40_0_0EXScopedNotificationSerializer serializedNotification:notification]];
     }
   }
@@ -34,11 +34,11 @@
 
 - (void)dismissNotificationWithIdentifier:(NSString *)identifier resolve:(ABI40_0_0UMPromiseResolveBlock)resolve reject:(ABI40_0_0UMPromiseRejectBlock)reject
 {
-  __block NSString *experienceScopeKey = _experienceScopeKey;
+  __block NSString *scopeKey = _scopeKey;
   [[UNUserNotificationCenter currentNotificationCenter] getDeliveredNotificationsWithCompletionHandler:^(NSArray<UNNotification *> * _Nonnull notifications) {
     for (UNNotification *notification in notifications) {
       if ([notification.request.identifier isEqual:identifier]) {
-        if ([ABI40_0_0EXScopedNotificationsUtils shouldNotification:notification beHandledByExperience:experienceScopeKey]) {
+        if ([ABI40_0_0EXScopedNotificationsUtils shouldNotification:notification beHandledByExperience:scopeKey]) {
           [[UNUserNotificationCenter currentNotificationCenter] removeDeliveredNotificationsWithIdentifiers:@[identifier]];
         }
         break;
@@ -50,11 +50,11 @@
 
 - (void)dismissAllNotificationsWithResolver:(ABI40_0_0UMPromiseResolveBlock)resolve reject:(ABI40_0_0UMPromiseRejectBlock)reject
 {
-  __block NSString *experienceScopeKey = _experienceScopeKey;
+  __block NSString *scopeKey = _scopeKey;
   [[UNUserNotificationCenter currentNotificationCenter] getDeliveredNotificationsWithCompletionHandler:^(NSArray<UNNotification *> * _Nonnull notifications) {
     NSMutableArray<NSString *> *toDismiss = [NSMutableArray new];
     for (UNNotification *notification in notifications) {
-      if ([ABI40_0_0EXScopedNotificationsUtils shouldNotification:notification beHandledByExperience:experienceScopeKey]) {
+      if ([ABI40_0_0EXScopedNotificationsUtils shouldNotification:notification beHandledByExperience:scopeKey]) {
         [toDismiss addObject:notification.request.identifier];
       }
     }

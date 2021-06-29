@@ -4,68 +4,68 @@
 
 @interface ABI41_0_0EXSensorsManagerBinding ()
 
-@property (nonatomic, strong) NSString *experienceScopeKey;
+@property (nonatomic, strong) NSString *scopeKey;
 @property (nonatomic, weak) id<ABI41_0_0EXSensorsManagerBindingDelegate> kernelService;
 
 @end
 
 @implementation ABI41_0_0EXSensorsManagerBinding
 
-- (instancetype)initWithExperienceScopeKey:(NSString *)experienceScopeKey andKernelService:(id<ABI41_0_0EXSensorsManagerBindingDelegate>)kernelService
+- (instancetype)initWithScopeKey:(NSString *)scopeKey andKernelService:(id<ABI41_0_0EXSensorsManagerBindingDelegate>)kernelService
 {
   if (self = [super init]) {
-    _experienceScopeKey = experienceScopeKey;
+    _scopeKey = scopeKey;
     _kernelService = kernelService;
   }
   return self;
 }
 
 - (void)sensorModuleDidSubscribeForAccelerometerUpdates:(id)scopedSensorModule withHandler:(void (^)(NSDictionary *))handlerBlock {
-  [_kernelService sensorModuleDidSubscribeForAccelerometerUpdatesOfExperience:_experienceScopeKey withHandler:handlerBlock];
+  [_kernelService sensorModuleDidSubscribeForAccelerometerUpdatesOfExperience:_scopeKey withHandler:handlerBlock];
 }
 
 - (void)sensorModuleDidSubscribeForDeviceMotionUpdates:(id)scopedSensorModule withHandler:(void (^)(NSDictionary *))handlerBlock {
-  [_kernelService sensorModuleDidSubscribeForDeviceMotionUpdatesOfExperience:_experienceScopeKey withHandler:handlerBlock];
+  [_kernelService sensorModuleDidSubscribeForDeviceMotionUpdatesOfExperience:_scopeKey withHandler:handlerBlock];
 }
 
 - (void)sensorModuleDidSubscribeForGyroscopeUpdates:(id)scopedSensorModule withHandler:(void (^)(NSDictionary *))handlerBlock {
-  [_kernelService sensorModuleDidSubscribeForGyroscopeUpdatesOfExperience:_experienceScopeKey withHandler:handlerBlock];
+  [_kernelService sensorModuleDidSubscribeForGyroscopeUpdatesOfExperience:_scopeKey withHandler:handlerBlock];
 }
 
 - (void)sensorModuleDidSubscribeForMagnetometerUncalibratedUpdates:(id)scopedSensorModule withHandler:(void (^)(NSDictionary *))handlerBlock {
-  [_kernelService sensorModuleDidSubscribeForMagnetometerUncalibratedUpdatesOfExperience:_experienceScopeKey withHandler:handlerBlock];
+  [_kernelService sensorModuleDidSubscribeForMagnetometerUncalibratedUpdatesOfExperience:_scopeKey withHandler:handlerBlock];
 }
 
 - (void)sensorModuleDidSubscribeForMagnetometerUpdates:(id)scopedSensorModule withHandler:(void (^)(NSDictionary *))handlerBlock {
-  [_kernelService sensorModuleDidSubscribeForMagnetometerUpdatesOfExperience:_experienceScopeKey withHandler:handlerBlock];
+  [_kernelService sensorModuleDidSubscribeForMagnetometerUpdatesOfExperience:_scopeKey withHandler:handlerBlock];
 }
 
 - (void)sensorModuleDidSubscribeForBarometerUpdates:(id)scopedSensorModule withHandler:(void (^)(NSDictionary *))handlerBlock {
-  [_kernelService sensorModuleDidSubscribeForBarometerUpdatesOfExperience:_experienceScopeKey withHandler:handlerBlock];
+  [_kernelService sensorModuleDidSubscribeForBarometerUpdatesOfExperience:_scopeKey withHandler:handlerBlock];
 }
 
 - (void)sensorModuleDidUnsubscribeForAccelerometerUpdates:(id)scopedSensorModule {
-  [_kernelService sensorModuleDidUnsubscribeForAccelerometerUpdatesOfExperience:_experienceScopeKey];
+  [_kernelService sensorModuleDidUnsubscribeForAccelerometerUpdatesOfExperience:_scopeKey];
 }
 
 - (void)sensorModuleDidUnsubscribeForDeviceMotionUpdates:(id)scopedSensorModule {
-  [_kernelService sensorModuleDidUnsubscribeForDeviceMotionUpdatesOfExperience:_experienceScopeKey];
+  [_kernelService sensorModuleDidUnsubscribeForDeviceMotionUpdatesOfExperience:_scopeKey];
 }
 
 - (void)sensorModuleDidUnsubscribeForGyroscopeUpdates:(id)scopedSensorModule {
-  [_kernelService sensorModuleDidUnsubscribeForGyroscopeUpdatesOfExperience:_experienceScopeKey];
+  [_kernelService sensorModuleDidUnsubscribeForGyroscopeUpdatesOfExperience:_scopeKey];
 }
 
 - (void)sensorModuleDidUnsubscribeForMagnetometerUncalibratedUpdates:(id)scopedSensorModule {
-  [_kernelService sensorModuleDidUnsubscribeForMagnetometerUncalibratedUpdatesOfExperience:_experienceScopeKey];
+  [_kernelService sensorModuleDidUnsubscribeForMagnetometerUncalibratedUpdatesOfExperience:_scopeKey];
 }
 
 - (void)sensorModuleDidUnsubscribeForMagnetometerUpdates:(id)scopedSensorModule {
-  [_kernelService sensorModuleDidUnsubscribeForMagnetometerUpdatesOfExperience:_experienceScopeKey];
+  [_kernelService sensorModuleDidUnsubscribeForMagnetometerUpdatesOfExperience:_scopeKey];
 }
 
 - (void)sensorModuleDidUnsubscribeForBarometerUpdates:(id)scopedSensorModule {
-  [_kernelService sensorModuleDidUnsubscribeForBarometerUpdatesOfExperience:_experienceScopeKey];
+  [_kernelService sensorModuleDidUnsubscribeForBarometerUpdatesOfExperience:_scopeKey];
 }
 
 - (void)setAccelerometerUpdateInterval:(NSTimeInterval)intervalMs {

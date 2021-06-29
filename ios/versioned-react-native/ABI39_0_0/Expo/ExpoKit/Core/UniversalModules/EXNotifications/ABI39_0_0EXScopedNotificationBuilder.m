@@ -4,16 +4,16 @@
 
 @interface ABI39_0_0EXScopedNotificationBuilder ()
 
-@property (nonatomic, strong) NSString *experienceScopeKey;
+@property (nonatomic, strong) NSString *scopeKey;
 
 @end
 
 @implementation ABI39_0_0EXScopedNotificationBuilder
 
-- (instancetype)initWithExperienceScopeKey:(NSString *)experienceScopeKey
+- (instancetype)initWithScopeKey:(NSString *)scopeKey
 {
   if (self = [super init]) {
-    _experienceScopeKey = experienceScopeKey;
+    _scopeKey = scopeKey;
   }
 
   return self;
@@ -26,12 +26,12 @@
   if (!userInfo) {
     userInfo = [NSMutableDictionary dictionary];
   }
-  userInfo[@"experienceId"] = _experienceScopeKey;
-  userInfo[@"scopeKey"] = _experienceScopeKey;
+  userInfo[@"experienceId"] = _scopeKey;
+  userInfo[@"scopeKey"] = _scopeKey;
   [content setUserInfo:userInfo];
 
   if (content.categoryIdentifier) {
-    NSString *categoryIdentifier = [NSString stringWithFormat:@"%@-%@", _experienceScopeKey, content.categoryIdentifier];
+    NSString *categoryIdentifier = [NSString stringWithFormat:@"%@-%@", _scopeKey, content.categoryIdentifier];
     [content setCategoryIdentifier:categoryIdentifier];
   }
 

@@ -103,6 +103,8 @@ addListenerWithNativeCallback('ExponentKernel.getHistoryUrlForExperienceId', asy
     const item1time = item1.time ? item1.time : 0;
     return item2time - item1time;
   });
+  // TODO(wschurman): only check for scope key in the future when most manifests contain it
+  // TODO(wschurman): update for new manifest2 format (Manifest)
   const historyItem = history.find(
     item =>
       item.manifest &&

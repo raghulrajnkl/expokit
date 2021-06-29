@@ -9,6 +9,6 @@
 
 @interface ABI39_0_0EXTaskManager : ABI39_0_0UMExportedModule <ABI39_0_0UMInternalModule, ABI39_0_0UMEventEmitter, ABI39_0_0UMModuleRegistryConsumer, ABI39_0_0UMTaskManagerInterface>
 
-- (instancetype)initWithExperienceScopeKey:(NSString *)experienceScopeKey NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithScopeKey:(NSString *)scopeKey NS_DESIGNATED_INITIALIZER;
 
 @end

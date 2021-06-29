@@ -76,56 +76,56 @@ ofDownloadWithManifest:(EXUpdatesRawManifest * _Nullable)manifest
 
 - (EXAppLoader *)_appLoaderWithScopedModule:(id)scopedModule
 {
-  NSString *experienceScopeKey = ((EXScopedBridgeModule *)scopedModule).experienceScopeKey;
-  return [self _appLoaderWithExperienceScopeKey:experienceScopeKey];
+  NSString *scopeKey = ((EXScopedBridgeModule *)scopedModule).scopeKey;
+  return [self _appLoaderWithScopeKey:scopeKey];
 }
 
-- (EXAppLoader *)_appLoaderWithExperienceScopeKey:(NSString *)experienceScopeKey
+- (EXAppLoader *)_appLoaderWithScopeKey:(NSString *)scopeKey
 {
-  EXKernelAppRecord *appRecord = [[EXKernel sharedInstance].appRegistry newestRecordWithExperienceScopeKey:experienceScopeKey];
+  EXKernelAppRecord *appRecord = [[EXKernel sharedInstance].appRegistry newestRecordWithScopeKey:scopeKey];
   return appRecord.appLoader;
 }
 
 # pragma mark - EXUpdatesBindingDelegate
 
-- (EXUpdatesConfig *)configForExperienceScopeKey:(NSString *)experienceScopeKey
+- (EXUpdatesConfig *)configForScopeKey:(NSString *)scopeKey
 {
-  return [self _appLoaderWithExperienceScopeKey:experienceScopeKey].config;
+  return [self _appLoaderWithScopeKey:scopeKey].config;
 }
 
-- (EXUpdatesSelectionPolicy *)selectionPolicyForExperienceScopeKey:(NSString *)experienceScopeKey
+- (EXUpdatesSelectionPolicy *)selectionPolicyForScopeKey:(NSString *)scopeKey
 {
-  return [self _appLoaderWithExperienceScopeKey:experienceScopeKey].selectionPolicy;
+  return [self _appLoaderWithScopeKey:scopeKey].selectionPolicy;
 }
 
-- (nullable EXUpdatesUpdate *)launchedUpdateForExperienceScopeKey:(NSString *)experienceScopeKey
+- (nullable EXUpdatesUpdate *)launchedUpdateForScopeKey:(NSString *)scopeKey
 {
-  return [self _appLoaderWithExperienceScopeKey:experienceScopeKey].appLauncher.launchedUpdate;
+  return [self _appLoaderWithScopeKey:scopeKey].appLauncher.launchedUpdate;
 }
 
-- (nullable NSDictionary *)assetFilesMapForExperienceScopeKey:(NSString *)experienceScopeKey
+- (nullable NSDictionary *)assetFilesMapForScopeKey:(NSString *)scopeKey
 {
-  return [self _appLoaderWithExperienceScopeKey:experienceScopeKey].appLauncher.assetFilesMap;
+  return [self _appLoaderWithScopeKey:scopeKey].appLauncher.assetFilesMap;
 }
 
-- (BOOL)isUsingEmbeddedAssetsForExperienceScopeKey:(NSString *)experienceScopeKey
+- (BOOL)isUsingEmbeddedAssetsForScopeKey:(NSString *)scopeKey
 {
   return NO;
 }
 
-- (BOOL)isStartedForExperienceScopeKey:(NSString *)experienceScopeKey
+- (BOOL)isStartedForScopeKey:(NSString *)scopeKey
 {
-  return [self _appLoaderWithExperienceScopeKey:experienceScopeKey].appLauncher != nil;
+  return [self _appLoaderWithScopeKey:scopeKey].appLauncher != nil;
 }
 
-- (BOOL)isEmergencyLaunchForExperienceScopeKey:(NSString *)experienceScopeKey
+- (BOOL)isEmergencyLaunchForScopeKey:(NSString *)scopeKey
 {
-  return [self _appLoaderWithExperienceScopeKey:experienceScopeKey].isEmergencyLaunch;
+  return [self _appLoaderWithScopeKey:scopeKey].isEmergencyLaunch;
 }
 
-- (void)requestRelaunchForExperienceScopeKey:(NSString *)experienceScopeKey withCompletion:(EXUpdatesAppRelaunchCompletionBlock)completion
+- (void)requestRelaunchForScopeKey:(NSString *)scopeKey withCompletion:(EXUpdatesAppRelaunchCompletionBlock)completion
 {
-  [[EXKernel sharedInstance] reloadAppFromCacheWithExperienceScopeKey:experienceScopeKey];
+  [[EXKernel sharedInstance] reloadAppFromCacheWithScopeKey:scopeKey];
   completion(YES);
 }
 
@@ -133,14 +133,14 @@ ofDownloadWithManifest:(EXUpdatesRawManifest * _Nullable)manifest
 
 - (void)updatesModuleDidSelectReload:(id)scopedModule
 {
-  NSString *experienceScopeKey = ((EXScopedBridgeModule *)scopedModule).experienceScopeKey;
-  [[EXKernel sharedInstance] reloadAppWithExperienceScopeKey:experienceScopeKey];
+  NSString *scopeKey = ((EXScopedBridgeModule *)scopedModule).scopeKey;
+  [[EXKernel sharedInstance] reloadAppWithScopeKey:scopeKey];
 }
 
 - (void)updatesModuleDidSelectReloadFromCache:(id)scopedModule
 {
-  NSString *experienceScopeKey = ((EXScopedBridgeModule *)scopedModule).experienceScopeKey;
-  [[EXKernel sharedInstance] reloadAppFromCacheWithExperienceScopeKey:experienceScopeKey];
+  NSString *scopeKey = ((EXScopedBridgeModule *)scopedModule).scopeKey;
+  [[EXKernel sharedInstance] reloadAppFromCacheWithScopeKey:scopeKey];
 }
 
 - (void)updatesModule:(id)scopedModule

@@ -5,16 +5,16 @@
 
 @interface EXScopedNotificationsHandlerModule ()
 
-@property (nonatomic, strong) NSString *experienceScopeKey;
+@property (nonatomic, strong) NSString *scopeKey;
 
 @end
 
 @implementation EXScopedNotificationsHandlerModule
 
-- (instancetype)initWithExperienceScopeKey:(NSString *)experienceScopeKey
+- (instancetype)initWithScopeKey:(NSString *)scopeKey
 {
   if (self = [super init]) {
-    _experienceScopeKey = experienceScopeKey;
+    _scopeKey = scopeKey;
   }
   
   return self;
@@ -22,7 +22,7 @@
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler
 {
-  if ([EXScopedNotificationsUtils shouldNotification:notification beHandledByExperience:_experienceScopeKey]) {
+  if ([EXScopedNotificationsUtils shouldNotification:notification beHandledByExperience:_scopeKey]) {
     [super userNotificationCenter:center willPresentNotification:notification withCompletionHandler:completionHandler];
   }
 }

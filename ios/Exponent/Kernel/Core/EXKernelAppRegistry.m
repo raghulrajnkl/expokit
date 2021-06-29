@@ -95,12 +95,12 @@
 }
 
 // when reloading, for a brief period of time there are two records with the same experience scopeKey in the registry
-- (EXKernelAppRecord * _Nullable)newestRecordWithExperienceScopeKey:(NSString *)scopeKey
+- (EXKernelAppRecord * _Nullable)newestRecordWithScopeKey:(NSString *)scopeKey
 {
   EXKernelAppRecord *recordToReturn;
   for (NSString *recordId in self.appEnumerator) {
     EXKernelAppRecord *record = [self recordForId:recordId];
-    if (record && record.experienceScopeKey && [record.experienceScopeKey isEqualToString:scopeKey]) {
+    if (record && record.scopeKey && [record.scopeKey isEqualToString:scopeKey]) {
       if (recordToReturn && [recordToReturn.timeCreated compare:record.timeCreated] == NSOrderedDescending) {
         continue;
       }
@@ -129,12 +129,12 @@
   return @"EXKernelAppRegistry (empty)";
 }
 
-- (BOOL)isExperienceScopeKeyUnique:(NSString *)experienceScopeKey
+- (BOOL)isScopeKeyUnique:(NSString *)scopeKey
 {
   int count = 0;
   for (NSString *recordId in self.appEnumerator) {
     EXKernelAppRecord *appRecord = [self recordForId:recordId];
-    if (appRecord.experienceScopeKey && [appRecord.experienceScopeKey isEqualToString:experienceScopeKey]) {
+    if (appRecord.scopeKey && [appRecord.scopeKey isEqualToString:scopeKey]) {
       count++;
       if (count > 1) {
         return NO;

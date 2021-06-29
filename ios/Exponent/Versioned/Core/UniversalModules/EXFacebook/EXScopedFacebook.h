@@ -7,7 +7,7 @@
 
 @interface EXScopedFacebook : EXFacebook <UMAppLifecycleListener>
 
-- (instancetype)initWithExperienceScopeKey:(NSString *)experienceScopeKey andParams:(NSDictionary *)params;
+- (instancetype)initWithScopeKey:(NSString *)scopeKey andParams:(NSDictionary *)params;
 
 @end
 #endif

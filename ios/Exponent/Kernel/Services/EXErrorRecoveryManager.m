@@ -42,12 +42,12 @@
   return self;
 }
 
-- (void)setDeveloperInfo:(NSDictionary *)developerInfo forExperienceScopeKey:(NSString *)scopeKey
+- (void)setDeveloperInfo:(NSDictionary *)developerInfo forScopeKey:(NSString *)scopeKey
 {
   if (!scopeKey) {
-    NSAssert(scopeKey, @"Cannot associate recovery info with a nil experience id");
+    NSAssert(scopeKey, @"Cannot associate recovery info with a nil scope key");
   }
-  EXErrorRecoveryRecord *record = [self _recordForExperienceScopeKey:scopeKey];
+  EXErrorRecoveryRecord *record = [self _recordForScopeKey:scopeKey];
   if (!record) {
     record = [[EXErrorRecoveryRecord alloc] init];
     @synchronized (_experienceInfo) {
@@ -57,9 +57,9 @@
   record.developerInfo = developerInfo;
 }
 
-- (NSDictionary *)developerInfoForExperienceScopeKey:(NSString *)scopeKey
+- (NSDictionary *)developerInfoForScopeKey:(NSString *)scopeKey
 {
-  EXErrorRecoveryRecord *record = [self _recordForExperienceScopeKey:scopeKey];
+  EXErrorRecoveryRecord *record = [self _recordForScopeKey:scopeKey];
   if (record) {
     return record.developerInfo;
   }
@@ -68,16 +68,16 @@
 
 - (void)setDeveloperInfo:(NSDictionary *)developerInfo forScopedModule:(id)scopedModule
 {
-  [self setDeveloperInfo:developerInfo forExperienceScopeKey:((EXScopedBridgeModule *)scopedModule).experienceScopeKey];
+  [self setDeveloperInfo:developerInfo forScopeKey:((EXScopedBridgeModule *)scopedModule).scopeKey];
 }
 
-- (void)setError:(NSError *)error forExperienceScopeKey:(NSString *)scopeKey
+- (void)setError:(NSError *)error forScopeKey:(NSString *)scopeKey
 {
   if (!scopeKey) {
     NSString *kernelSuggestion = ([EXBuildConstants sharedInstance].isDevKernel) ? @"Make sure EXBuildConstants is configured to load a valid development Kernel JS bundle." : @"";
     NSAssert(scopeKey, @"Cannot associate an error with a nil experience id. %@", kernelSuggestion);
   }
-  EXErrorRecoveryRecord *record = [self _recordForExperienceScopeKey:scopeKey];
+  EXErrorRecoveryRecord *record = [self _recordForScopeKey:scopeKey];
   if (error) {
     if (!record) {
       record = [[EXErrorRecoveryRecord alloc] init];
@@ -107,12 +107,12 @@
   if (!error) {
     return NO;
   }
-  NSArray<NSString *> *experienceScopeKeys;
+  NSArray<NSString *> *scopeKeys;
   @synchronized (_experienceInfo) {
-    experienceScopeKeys = _experienceInfo.allKeys;
+    scopeKeys = _experienceInfo.allKeys;
   }
-  for (NSString *experienceScopeKey in experienceScopeKeys) {
-    EXErrorRecoveryRecord *record = [self _recordForExperienceScopeKey:experienceScopeKey];
+  for (NSString *scopeKey in scopeKeys) {
+    EXErrorRecoveryRecord *record = [self _recordForScopeKey:scopeKey];
     if ([self isJSError:record.error equalToOtherJSError:error]) {
       return YES;
     }
@@ -125,14 +125,14 @@
   if (!error) {
     return nil;
   }
-  NSArray<NSString *> *experienceScopeKeys;
+  NSArray<NSString *> *scopeKeys;
   @synchronized (_experienceInfo) {
-    experienceScopeKeys = _experienceInfo.allKeys;
+    scopeKeys = _experienceInfo.allKeys;
   }
-  for (NSString *experienceScopeKey in experienceScopeKeys) {
-    EXErrorRecoveryRecord *record = [self _recordForExperienceScopeKey:experienceScopeKey];
+  for (NSString *scopeKey in scopeKeys) {
+    EXErrorRecoveryRecord *record = [self _recordForScopeKey:scopeKey];
     if ([self isJSError:record.error equalToOtherJSError:error]) {
-      return [[EXKernel sharedInstance].appRegistry newestRecordWithExperienceScopeKey:experienceScopeKey];
+      return [[EXKernel sharedInstance].appRegistry newestRecordWithScopeKey:scopeKey];
     }
   }
   return nil;
@@ -143,7 +143,7 @@
   if (!scopeKey) {
     NSAssert(scopeKey, @"Cannot mark an experience with nil id as loaded");
   }
-  EXErrorRecoveryRecord *record = [self _recordForExperienceScopeKey:scopeKey];
+  EXErrorRecoveryRecord *record = [self _recordForScopeKey:scopeKey];
   if (!record) {
     record = [[EXErrorRecoveryRecord alloc] init];
     @synchronized (_experienceInfo) {
@@ -157,9 +157,9 @@
   _dtmAnyExperienceLoaded = [NSDate date];
 }
 
-- (BOOL)experienceScopeKeyIsRecoveringFromError:(NSString *)scopeKey
+- (BOOL)scopeKeyIsRecoveringFromError:(NSString *)scopeKey
 {
-  EXErrorRecoveryRecord *record = [self _recordForExperienceScopeKey:scopeKey];
+  EXErrorRecoveryRecord *record = [self _recordForScopeKey:scopeKey];
   if (record) {
     return record.isRecovering;
   }
@@ -168,7 +168,7 @@
 
 - (BOOL)experienceShouldReloadOnError:(NSString *)scopeKey
 {
-  EXErrorRecoveryRecord *record = [self _recordForExperienceScopeKey:scopeKey];
+  EXErrorRecoveryRecord *record = [self _recordForScopeKey:scopeKey];
   if (record) {
     return ([record.dtmLastLoaded timeIntervalSinceNow] < -[self reloadBufferSeconds]);
   }
@@ -196,7 +196,7 @@
   return [error1 isEqual:error2];
 }
 
-- (EXErrorRecoveryRecord *)_recordForExperienceScopeKey:(NSString *)scopeKey;
+- (EXErrorRecoveryRecord *)_recordForScopeKey:(NSString *)scopeKey;
 {
   EXErrorRecoveryRecord *result = nil;
   if (scopeKey) {

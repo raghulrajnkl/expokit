@@ -8,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EXUpdatesBinding ()
 
-@property (nonatomic, strong) NSString *experienceScopeKey;
+@property (nonatomic, strong) NSString *scopeKey;
 @property (nonatomic, weak) id<EXUpdatesBindingDelegate> updatesKernelService;
 @property (nonatomic, weak) id<EXUpdatesDatabaseBindingDelegate> databaseKernelService;
 
@@ -16,10 +16,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation EXUpdatesBinding : EXUpdatesService
 
-- (instancetype)initWithExperienceScopeKey:(NSString *)experienceScopeKey updatesKernelService:(id<EXUpdatesBindingDelegate>)updatesKernelService databaseKernelService:(id<EXUpdatesDatabaseBindingDelegate>)databaseKernelService
+- (instancetype)initWithScopeKey:(NSString *)scopeKey updatesKernelService:(id<EXUpdatesBindingDelegate>)updatesKernelService databaseKernelService:(id<EXUpdatesDatabaseBindingDelegate>)databaseKernelService
 {
   if (self = [super init]) {
-    _experienceScopeKey = experienceScopeKey;
+    _scopeKey = scopeKey;
     _updatesKernelService = updatesKernelService;
     _databaseKernelService = databaseKernelService;
   }
@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (EXUpdatesConfig *)config
 {
-  return [_updatesKernelService configForExperienceScopeKey:_experienceScopeKey];
+  return [_updatesKernelService configForScopeKey:_scopeKey];
 }
 
 - (EXUpdatesDatabase *)database
@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (EXUpdatesSelectionPolicy *)selectionPolicy
 {
-  return [_updatesKernelService selectionPolicyForExperienceScopeKey:_experienceScopeKey];
+  return [_updatesKernelService selectionPolicyForScopeKey:_scopeKey];
 }
 
 - (NSURL *)directory
@@ -48,27 +48,27 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable EXUpdatesUpdate *)launchedUpdate
 {
-  return [_updatesKernelService launchedUpdateForExperienceScopeKey:_experienceScopeKey];
+  return [_updatesKernelService launchedUpdateForScopeKey:_scopeKey];
 }
 
 - (nullable NSDictionary *)assetFilesMap
 {
-  return [_updatesKernelService assetFilesMapForExperienceScopeKey:_experienceScopeKey];
+  return [_updatesKernelService assetFilesMapForScopeKey:_scopeKey];
 }
 
 - (BOOL)isUsingEmbeddedAssets
 {
-  return [_updatesKernelService isUsingEmbeddedAssetsForExperienceScopeKey:_experienceScopeKey];
+  return [_updatesKernelService isUsingEmbeddedAssetsForScopeKey:_scopeKey];
 }
 
 - (BOOL)isStarted
 {
-  return [_updatesKernelService isStartedForExperienceScopeKey:_experienceScopeKey];
+  return [_updatesKernelService isStartedForScopeKey:_scopeKey];
 }
 
 - (BOOL)isEmergencyLaunch
 {
-  return [_updatesKernelService isEmergencyLaunchForExperienceScopeKey:_experienceScopeKey];
+  return [_updatesKernelService isEmergencyLaunchForScopeKey:_scopeKey];
 }
 
 - (BOOL)canRelaunch
@@ -78,7 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)requestRelaunchWithCompletion:(EXUpdatesAppRelaunchCompletionBlock)completion
 {
-  return [_updatesKernelService requestRelaunchForExperienceScopeKey:_experienceScopeKey withCompletion:completion];
+  return [_updatesKernelService requestRelaunchForScopeKey:_scopeKey withCompletion:completion];
 }
 
 - (void)resetSelectionPolicy

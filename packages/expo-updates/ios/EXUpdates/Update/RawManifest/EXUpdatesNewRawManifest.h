@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Incorrect for now until we figure out how to get this in the new manifest format.
  */
-- (NSString *)stableLegacyId;
+- (NSString *)stableLegacyId DEPRECATED_MSG_ATTRIBUTE("Modern manifests don't support stable legacy IDs");
 
 /**
  * Incorrect for now until we figure out how to get this in the new manifest format.

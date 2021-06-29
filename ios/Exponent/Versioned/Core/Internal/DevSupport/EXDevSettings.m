@@ -12,7 +12,7 @@ NSString *const kRCTDevSettingHotLoadingEnabled = @"hotLoadingEnabled";
 
 + (NSString *)moduleName { return @"RCTDevSettings"; }
 
-- (instancetype)initWithExperienceScopeKey:(NSString *)experienceScopeKey isDevelopment:(BOOL)isDevelopment
+- (instancetype)initWithScopeKey:(NSString *)scopeKey isDevelopment:(BOOL)isDevelopment
 {
   NSDictionary *defaultValues = @{
                                   kRCTDevSettingShakeToShowDevMenu: @YES,
@@ -20,7 +20,7 @@ NSString *const kRCTDevSettingHotLoadingEnabled = @"hotLoadingEnabled";
                                   kRCTDevSettingLiveReloadEnabled: @NO,
                                   };
   EXDevSettingsDataSource *dataSource = [[EXDevSettingsDataSource alloc] initWithDefaultValues:defaultValues
-                                                                         forExperienceScopeKey:experienceScopeKey
+                                                                         forScopeKey:scopeKey
                                                                                  isDevelopment:isDevelopment];
   return [super initWithDataSource:dataSource];
 }

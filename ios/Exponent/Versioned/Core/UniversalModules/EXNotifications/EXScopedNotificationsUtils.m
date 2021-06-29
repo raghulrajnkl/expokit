@@ -4,31 +4,31 @@
 
 @implementation EXScopedNotificationsUtils
 
-+ (BOOL)shouldNotificationRequest:(UNNotificationRequest *)request beHandledByExperience:(NSString *)experienceScopeKey
++ (BOOL)shouldNotificationRequest:(UNNotificationRequest *)request beHandledByExperience:(NSString *)scopeKey
 {
-  NSString *notificationExperienceScopeKey = request.content.userInfo[@"experienceId"];
-  if (!notificationExperienceScopeKey) {
+  NSString *notificationScopeKey = request.content.userInfo[@"experienceId"];
+  if (!notificationScopeKey) {
     return true;
   }
-  return [notificationExperienceScopeKey isEqual:experienceScopeKey];
+  return [notificationScopeKey isEqual:scopeKey];
 }
 
-+ (BOOL)shouldNotification:(UNNotification *)notification beHandledByExperience:(NSString *)experienceScopeKey
++ (BOOL)shouldNotification:(UNNotification *)notification beHandledByExperience:(NSString *)scopeKey
 {
-  return [EXScopedNotificationsUtils shouldNotificationRequest:notification.request beHandledByExperience:experienceScopeKey];
+  return [EXScopedNotificationsUtils shouldNotificationRequest:notification.request beHandledByExperience:scopeKey];
 }
 
-+ (NSString *)scopedIdentifierFromId:(NSString *)unscopedId forExperience:(NSString *)experienceScopeKey
++ (NSString *)scopedIdentifierFromId:(NSString *)unscopedId forExperience:(NSString *)scopeKey
 {
-  NSString *scope = [EXScopedNotificationsUtils escapedString:experienceScopeKey];
+  NSString *scope = [EXScopedNotificationsUtils escapedString:scopeKey];
   NSString *escapedCategoryId = [EXScopedNotificationsUtils escapedString:unscopedId];
   return [NSString stringWithFormat:@"%@/%@", scope, escapedCategoryId];
 }
 
-+ (BOOL)isId:(NSString *)identifier scopedByExperience:(NSString *)experienceScopeKey
++ (BOOL)isId:(NSString *)identifier scopedByExperience:(NSString *)scopeKey
 {
   NSString *scopeFromCategoryId = [EXScopedNotificationsUtils getScopeAndIdentifierFromScopedIdentifier:identifier].scopeKey;
-  return [scopeFromCategoryId isEqualToString:experienceScopeKey];
+  return [scopeFromCategoryId isEqualToString:scopeKey];
 }
 
 + (ScopedIdentifierComponents)getScopeAndIdentifierFromScopedIdentifier:(NSString *)scopedIdentifier
@@ -73,17 +73,17 @@
 
 # pragma mark Legacy notification category scoping
 
-+ (BOOL)isLegacyCategoryId:(NSString *) scopedCategoryId scopedByExperienceStableLegacyId:(NSString *)experienceStableLegacyId
++ (BOOL)isLegacyCategoryId:(NSString *)scopedCategoryId scopedByScopeKey:(NSString *)scopeKey
 {
-  NSString* legacyScopingPrefix = [NSString stringWithFormat:@"%@-", experienceStableLegacyId];
+  NSString* legacyScopingPrefix = [NSString stringWithFormat:@"%@-", scopeKey];
   return [scopedCategoryId hasPrefix:legacyScopingPrefix];
 }
 
 // legacy categories were stored under an unescaped experienceId
 + (NSString *)unscopedLegacyCategoryIdentifierWithId:(NSString *)scopedCategoryId
-                         forExperienceStableLegacyId:(NSString *)experienceStableLegacyId
+                         forScopeKey:(NSString *)scopeKey
 {
-  NSString* legacyScopingPrefix = [NSString stringWithFormat:@"%@-", experienceStableLegacyId];
+  NSString* legacyScopingPrefix = [NSString stringWithFormat:@"%@-", scopeKey];
   return [scopedCategoryId stringByReplacingOccurrencesOfString:legacyScopingPrefix
                                                      withString:@""
                                                         options:NSAnchoredSearch

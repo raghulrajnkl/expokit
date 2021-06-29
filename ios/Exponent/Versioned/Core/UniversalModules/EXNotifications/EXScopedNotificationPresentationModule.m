@@ -7,16 +7,16 @@
 
 @interface EXScopedNotificationPresentationModule ()
 
-@property (nonatomic, strong) NSString *experienceScopeKey;
+@property (nonatomic, strong) NSString *scopeKey;
 
 @end
 
 @implementation EXScopedNotificationPresentationModule
 
-- (instancetype)initWithExperienceScopeKey:(NSString *)experienceScopeKey
+- (instancetype)initWithScopeKey:(NSString *)scopeKey
 {
   if (self = [super init]) {
-    _experienceScopeKey = experienceScopeKey;
+    _scopeKey = scopeKey;
   }
   
   return self;
@@ -26,7 +26,7 @@
 {
   NSMutableArray *serializedNotifications = [NSMutableArray new];
   for (UNNotification *notification in notifications) {
-    if ([EXScopedNotificationsUtils shouldNotification:notification beHandledByExperience:_experienceScopeKey]) {
+    if ([EXScopedNotificationsUtils shouldNotification:notification beHandledByExperience:_scopeKey]) {
       [serializedNotifications addObject:[EXScopedNotificationSerializer serializedNotification:notification]];
     }
   }
@@ -35,10 +35,10 @@
 
 - (void)dismissNotificationWithIdentifier:(NSString *)identifier resolve:(UMPromiseResolveBlock)resolve reject:(UMPromiseRejectBlock)reject
 {
-  __block NSString *experienceScopeKey = _experienceScopeKey;
+  __block NSString *scopeKey = _scopeKey;
   [[UNUserNotificationCenter currentNotificationCenter] getDeliveredNotificationsWithCompletionHandler:^(NSArray<UNNotification *> * _Nonnull notifications) {
     for (UNNotification *notification in notifications) {
-      if ([EXScopedNotificationsUtils shouldNotification:notification beHandledByExperience:experienceScopeKey]) {
+      if ([EXScopedNotificationsUtils shouldNotification:notification beHandledByExperience:scopeKey]) {
         // Usually we would scope the input ID and then check equality, but remote notifications do not
         // have the scoping prefix, so instead let's remove the scope if there is one, then check for
         // equality against the input
@@ -55,11 +55,11 @@
 
 - (void)dismissAllNotificationsWithResolver:(UMPromiseResolveBlock)resolve reject:(UMPromiseRejectBlock)reject
 {
-  __block NSString *experienceScopeKey = _experienceScopeKey;
+  __block NSString *scopeKey = _scopeKey;
   [[UNUserNotificationCenter currentNotificationCenter] getDeliveredNotificationsWithCompletionHandler:^(NSArray<UNNotification *> * _Nonnull notifications) {
     NSMutableArray<NSString *> *toDismiss = [NSMutableArray new];
     for (UNNotification *notification in notifications) {
-      if ([EXScopedNotificationsUtils shouldNotification:notification beHandledByExperience:experienceScopeKey]) {
+      if ([EXScopedNotificationsUtils shouldNotification:notification beHandledByExperience:scopeKey]) {
         [toDismiss addObject:notification.request.identifier];
       }
     }

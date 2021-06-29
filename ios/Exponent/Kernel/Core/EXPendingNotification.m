@@ -5,7 +5,7 @@
 
 @interface EXPendingNotification ()
 
-@property (nonatomic, strong) NSString *experienceScopeKey;
+@property (nonatomic, strong) NSString *scopeKey;
 @property (nonatomic, strong) NSDictionary *body;
 @property (nonatomic, assign) BOOL isRemote;
 @property (nonatomic, assign) BOOL isFromBackground;
@@ -19,7 +19,7 @@
 - (instancetype)initWithNotification:(UNNotification *)notification
 {
   NSDictionary *payload = notification.request.content.userInfo ?: @{};
-  return [self initWithExperienceScopeKey:payload[@"scopeKey"] ?: payload[@"experienceId"]
+  return [self initWithScopeKey:payload[@"scopeKey"] ?: payload[@"experienceId"]
                          notificationBody:payload[@"body"]
                                  isRemote:[notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]
                          isFromBackground:NO
@@ -41,7 +41,7 @@
   return self;
 }
 
-- (instancetype)initWithExperienceScopeKey:(NSString *)experienceScopeKey
+- (instancetype)initWithScopeKey:(NSString *)scopeKey
                           notificationBody:(NSDictionary *)body
                                   isRemote:(BOOL)isRemote
                           isFromBackground:(BOOL)isFromBackground
@@ -50,7 +50,7 @@
   if (self = [super init]) {
     _isRemote = isRemote;
     _isFromBackground = isFromBackground;
-    _experienceScopeKey = experienceScopeKey;
+    _scopeKey = scopeKey;
     _body = body ?: @{};
     _actionId = actionId;
     _userText = userText;

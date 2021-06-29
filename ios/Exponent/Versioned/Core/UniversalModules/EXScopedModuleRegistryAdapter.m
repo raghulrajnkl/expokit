@@ -39,13 +39,13 @@
 
 - (UMModuleRegistry *)moduleRegistryForParams:(NSDictionary *)params
                   forExperienceStableLegacyId:(NSString *)experienceStableLegacyId
-                           experienceScopeKey:(NSString *)experienceScopeKey
+                           scopeKey:(NSString *)scopeKey
                            withKernelServices:(NSDictionary *)kernelServices
 {
   UMModuleRegistry *moduleRegistry = [self.moduleRegistryProvider moduleRegistry];
 
 #if __has_include(<EXUpdates/EXUpdatesService.h>)
-  EXUpdatesBinding *updatesBinding = [[EXUpdatesBinding alloc] initWithExperienceScopeKey:experienceScopeKey
+  EXUpdatesBinding *updatesBinding = [[EXUpdatesBinding alloc] initWithScopeKey:scopeKey
                                                                      updatesKernelService:kernelServices[EX_UNVERSIONED(@"EXUpdatesManager")]
                                                                     databaseKernelService:kernelServices[EX_UNVERSIONED(@"EXUpdatesDatabaseManager")]];
   [moduleRegistry registerInternalModule:updatesBinding];
@@ -59,7 +59,7 @@
 #if __has_include(<EXFacebook/EXFacebook.h>)
   // only override in Expo Go
   if ([params[@"constants"][@"appOwnership"] isEqualToString:@"expo"]) {
-    EXScopedFacebook *scopedFacebook = [[EXScopedFacebook alloc] initWithExperienceScopeKey:experienceScopeKey andParams:params];
+    EXScopedFacebook *scopedFacebook = [[EXScopedFacebook alloc] initWithScopeKey:scopeKey andParams:params];
     [moduleRegistry registerExportedModule:scopedFacebook];
   }
 #endif
@@ -85,7 +85,7 @@
 #endif
 
 #if __has_include(<EXSensors/EXSensorsManager.h>)
-  EXSensorsManagerBinding *sensorsManagerBinding = [[EXSensorsManagerBinding alloc] initWithExperienceScopeKey:experienceScopeKey andKernelService:kernelServices[EX_UNVERSIONED(@"EXSensorManager")]];
+  EXSensorsManagerBinding *sensorsManagerBinding = [[EXSensorsManagerBinding alloc] initWithScopeKey:scopeKey andKernelService:kernelServices[EX_UNVERSIONED(@"EXSensorManager")]];
   [moduleRegistry registerInternalModule:sensorsManagerBinding];
 #endif
 
@@ -101,7 +101,7 @@
 #endif
 
 #if __has_include(<EXSecureStore/EXSecureStore.h>)
-  EXScopedSecureStore *secureStoreModule = [[EXScopedSecureStore alloc] initWithExperienceScopeKey:experienceScopeKey andConstantsBinding:constantsBinding];
+  EXScopedSecureStore *secureStoreModule = [[EXScopedSecureStore alloc] initWithScopeKey:scopeKey andConstantsBinding:constantsBinding];
   [moduleRegistry registerExportedModule:secureStoreModule];
 #endif
 
@@ -111,7 +111,7 @@
 #endif
 
 #if __has_include(<UMReactNativeAdapter/EXPermissionsService.h>)
-  EXScopedPermissions *permissionsModule = [[EXScopedPermissions alloc] initWithExperienceScopeKey:experienceScopeKey andConstantsBinding:constantsBinding];
+  EXScopedPermissions *permissionsModule = [[EXScopedPermissions alloc] initWithScopeKey:scopeKey andConstantsBinding:constantsBinding];
   [moduleRegistry registerExportedModule:permissionsModule];
   [moduleRegistry registerInternalModule:permissionsModule];
 #endif
@@ -122,7 +122,7 @@
 #endif
 
 #if __has_include(<EXBranch/RNBranch.h>)
-  EXScopedBranch *branchModule = [[EXScopedBranch alloc] initWithExperienceScopeKey:experienceScopeKey];
+  EXScopedBranch *branchModule = [[EXScopedBranch alloc] initWithScopeKey:scopeKey];
   [moduleRegistry registerInternalModule:branchModule];
 #endif
 
@@ -133,18 +133,18 @@
 
 #if __has_include(<EXTaskManager/EXTaskManager.h>)
   // TODO: Make scoped task manager when adding support for bare React Native
-  EXTaskManager *taskManagerModule = [[EXTaskManager alloc] initWithExperienceScopeKey:experienceScopeKey];
+  EXTaskManager *taskManagerModule = [[EXTaskManager alloc] initWithScopeKey:scopeKey];
   [moduleRegistry registerInternalModule:taskManagerModule];
   [moduleRegistry registerExportedModule:taskManagerModule];
 #endif
   
 #if __has_include(<EXErrorRecovery/EXErrorRecoveryModule.h>)
-  EXScopedErrorRecoveryModule *errorRecovery = [[EXScopedErrorRecoveryModule alloc] initWithExperienceScopeKey:experienceScopeKey];
+  EXScopedErrorRecoveryModule *errorRecovery = [[EXScopedErrorRecoveryModule alloc] initWithScopeKey:scopeKey];
   [moduleRegistry registerExportedModule:errorRecovery];
 #endif
   
 #if __has_include(<EXFirebaseCore/EXFirebaseCore.h>)
-  EXScopedFirebaseCore *firebaseCoreModule = [[EXScopedFirebaseCore alloc] initWithExperienceScopeKey:experienceScopeKey andConstantsBinding:constantsBinding];
+  EXScopedFirebaseCore *firebaseCoreModule = [[EXScopedFirebaseCore alloc] initWithScopeKey:scopeKey andConstantsBinding:constantsBinding];
   [moduleRegistry registerExportedModule:firebaseCoreModule];
   [moduleRegistry registerInternalModule:firebaseCoreModule];
 #endif
@@ -152,7 +152,7 @@
 #if __has_include(<EXNotifications/EXNotificationsEmitter.h>)
   // only override in Expo Go
   if ([params[@"constants"][@"appOwnership"] isEqualToString:@"expo"]) {
-    EXScopedNotificationsEmitter *notificationsEmmitter = [[EXScopedNotificationsEmitter alloc] initWithExperienceScopeKey:experienceScopeKey];
+    EXScopedNotificationsEmitter *notificationsEmmitter = [[EXScopedNotificationsEmitter alloc] initWithScopeKey:scopeKey];
     [moduleRegistry registerExportedModule:notificationsEmmitter];
   }
 #endif
@@ -160,13 +160,13 @@
 #if __has_include(<EXNotifications/EXNotificationsHandlerModule.h>)
   // only override in Expo Go
   if ([params[@"constants"][@"appOwnership"] isEqualToString:@"expo"]) {
-    EXScopedNotificationsHandlerModule *notificationsHandler = [[EXScopedNotificationsHandlerModule alloc] initWithExperienceScopeKey:experienceScopeKey];
+    EXScopedNotificationsHandlerModule *notificationsHandler = [[EXScopedNotificationsHandlerModule alloc] initWithScopeKey:scopeKey];
     [moduleRegistry registerExportedModule:notificationsHandler];
   }
 #endif
   
 #if __has_include(<EXNotifications/EXNotificationsHandlerModule.h>)
-  EXScopedNotificationBuilder *notificationsBuilder = [[EXScopedNotificationBuilder alloc] initWithExperienceScopeKey:experienceScopeKey
+  EXScopedNotificationBuilder *notificationsBuilder = [[EXScopedNotificationBuilder alloc] initWithScopeKey:scopeKey
                                                                                                   andConstantsBinding:constantsBinding];
   [moduleRegistry registerInternalModule:notificationsBuilder];
 #endif
@@ -174,7 +174,7 @@
 #if __has_include(<EXNotifications/EXNotificationSchedulerModule.h>)
   // only override in Expo Go
   if ([params[@"constants"][@"appOwnership"] isEqualToString:@"expo"]) {
-    EXScopedNotificationSchedulerModule *schedulerModule = [[EXScopedNotificationSchedulerModule alloc] initWithExperienceScopeKey:experienceScopeKey];
+    EXScopedNotificationSchedulerModule *schedulerModule = [[EXScopedNotificationSchedulerModule alloc] initWithScopeKey:scopeKey];
     [moduleRegistry registerExportedModule:schedulerModule];
   }
 #endif
@@ -182,7 +182,7 @@
 #if __has_include(<EXNotifications/EXNotificationPresentationModule.h>)
   // only override in Expo Go
   if ([params[@"constants"][@"appOwnership"] isEqualToString:@"expo"]) {
-    EXScopedNotificationPresentationModule *notificationPresentationModule = [[EXScopedNotificationPresentationModule alloc] initWithExperienceScopeKey:experienceScopeKey];
+    EXScopedNotificationPresentationModule *notificationPresentationModule = [[EXScopedNotificationPresentationModule alloc] initWithScopeKey:scopeKey];
     [moduleRegistry registerExportedModule:notificationPresentationModule];
   }
 #endif
@@ -190,17 +190,17 @@
 #if __has_include(<EXNotifications/EXNotificationCategoriesModule.h>)
   // only override in Expo Go
   if ([params[@"constants"][@"appOwnership"] isEqualToString:@"expo"]) {
-    EXScopedNotificationCategoriesModule *scopedCategoriesModule = [[EXScopedNotificationCategoriesModule alloc] initWithExperienceScopeKey:experienceScopeKey
+    EXScopedNotificationCategoriesModule *scopedCategoriesModule = [[EXScopedNotificationCategoriesModule alloc] initWithScopeKey:scopeKey
                                                                                                                         andConstantsBinding:constantsBinding];
     [moduleRegistry registerExportedModule:scopedCategoriesModule];
   }
   [EXScopedNotificationCategoriesModule maybeMigrateLegacyCategoryIdentifiersForProjectWithExperienceStableLegacyId:experienceStableLegacyId
-                                                                                                 experienceScopeKey:experienceScopeKey
+                                                                                                 scopeKey:scopeKey
                                                                                                          isInExpoGo:[params[@"constants"][@"appOwnership"] isEqualToString:@"expo"]];
 #endif
   
 #if __has_include(<EXNotifications/EXServerRegistrationModule.h>)
-  EXScopedServerRegistrationModule *serverRegistrationModule = [[EXScopedServerRegistrationModule alloc] initWithExperienceScopeKey:experienceScopeKey];
+  EXScopedServerRegistrationModule *serverRegistrationModule = [[EXScopedServerRegistrationModule alloc] initWithScopeKey:scopeKey];
   [moduleRegistry registerExportedModule:serverRegistrationModule];
 #endif
 

@@ -11,25 +11,25 @@
 }
 
 - (instancetype)initWithExperienceStableLegacyId:(NSString *)experienceStableLegacyId
-                              experienceScopeKey:(NSString *)experienceScopeKey
+                              scopeKey:(NSString *)scopeKey
                            kernelServiceDelegate:(id)kernelServiceInstance
                                           params:(NSDictionary *)params
 {
   if (self = [super init]) {
     _experienceStableLegacyId = experienceStableLegacyId;
-    _experienceScopeKey = experienceScopeKey;
+    _scopeKey = scopeKey;
   }
   return self;
 }
 
 - (instancetype)initWithExperienceStableLegacyId:(NSString *)experienceStableLegacyId
-                              experienceScopeKey:(NSString *)experienceScopeKey
+                              scopeKey:(NSString *)scopeKey
                           kernelServiceDelegates:(NSDictionary *)kernelServiceInstances
                                           params:(NSDictionary *)params
 {
   if (self = [super init]) {
     _experienceStableLegacyId = experienceStableLegacyId;
-    _experienceScopeKey = experienceScopeKey;
+    _scopeKey = scopeKey;
   }
   return self;
 }

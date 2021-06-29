@@ -13,14 +13,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol EXUpdatesBindingDelegate
 
-- (EXUpdatesConfig *)configForExperienceScopeKey:(NSString *)experienceScopeKey;
-- (EXUpdatesSelectionPolicy *)selectionPolicyForExperienceScopeKey:(NSString *)experienceScopeKey;
-- (nullable EXUpdatesUpdate *)launchedUpdateForExperienceScopeKey:(NSString *)experienceScopeKey;
-- (nullable NSDictionary *)assetFilesMapForExperienceScopeKey:(NSString *)experienceScopeKey;
-- (BOOL)isUsingEmbeddedAssetsForExperienceScopeKey:(NSString *)experienceScopeKey;
-- (BOOL)isStartedForExperienceScopeKey:(NSString *)experienceScopeKey;
-- (BOOL)isEmergencyLaunchForExperienceScopeKey:(NSString *)experienceScopeKey;
-- (void)requestRelaunchForExperienceScopeKey:(NSString *)experienceScopeKey withCompletion:(EXUpdatesAppRelaunchCompletionBlock)completion;
+- (EXUpdatesConfig *)configForScopeKey:(NSString *)scopeKey;
+- (EXUpdatesSelectionPolicy *)selectionPolicyForScopeKey:(NSString *)scopeKey;
+- (nullable EXUpdatesUpdate *)launchedUpdateForScopeKey:(NSString *)scopeKey;
+- (nullable NSDictionary *)assetFilesMapForScopeKey:(NSString *)scopeKey;
+- (BOOL)isUsingEmbeddedAssetsForScopeKey:(NSString *)scopeKey;
+- (BOOL)isStartedForScopeKey:(NSString *)scopeKey;
+- (BOOL)isEmergencyLaunchForScopeKey:(NSString *)scopeKey;
+- (void)requestRelaunchForScopeKey:(NSString *)scopeKey withCompletion:(EXUpdatesAppRelaunchCompletionBlock)completion;
 
 @end
 
@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EXUpdatesBinding : EXUpdatesService <UMInternalModule>
 
-- (instancetype)initWithExperienceScopeKey:(NSString *)experienceScopeKey updatesKernelService:(id<EXUpdatesBindingDelegate>)updatesKernelService databaseKernelService:(id<EXUpdatesDatabaseBindingDelegate>)databaseKernelService;
+- (instancetype)initWithScopeKey:(NSString *)scopeKey updatesKernelService:(id<EXUpdatesBindingDelegate>)updatesKernelService databaseKernelService:(id<EXUpdatesDatabaseBindingDelegate>)databaseKernelService;
 
 @end
 

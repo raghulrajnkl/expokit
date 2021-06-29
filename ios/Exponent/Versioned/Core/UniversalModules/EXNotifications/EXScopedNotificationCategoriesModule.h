@@ -9,11 +9,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EXScopedNotificationCategoriesModule : EXNotificationCategoriesModule
 
-- (instancetype)initWithExperienceScopeKey:(NSString *)experienceScopeKey
+- (instancetype)initWithScopeKey:(NSString *)scopeKey
                        andConstantsBinding:(EXConstantsBinding *)constantsBinding;
 
 + (void)maybeMigrateLegacyCategoryIdentifiersForProjectWithExperienceStableLegacyId:(NSString *)experienceStableLegacyId
-                                                                 experienceScopeKey:(NSString *)experienceScopeKey
+                                                                 scopeKey:(NSString *)scopeKey
                                                                          isInExpoGo:(BOOL)isInExpoGo;
 
 @end

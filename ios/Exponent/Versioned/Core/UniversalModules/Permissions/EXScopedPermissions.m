@@ -7,7 +7,7 @@
 
 @interface EXScopedPermissions ()
 
-@property (nonatomic, strong) NSString *experienceScopeKey;
+@property (nonatomic, strong) NSString *scopeKey;
 @property (nonatomic, weak) id<EXPermissionsScopedModuleDelegate> permissionsService;
 @property (nonatomic, weak) id<UMUtilitiesInterface> utils;
 @property (nonatomic, weak) EXConstantsBinding *constantsBinding;
@@ -16,10 +16,10 @@
 
 @implementation EXScopedPermissions
 
-- (instancetype)initWithExperienceScopeKey:(NSString *)experienceScopeKey andConstantsBinding:(EXConstantsBinding *)constantsBinding
+- (instancetype)initWithScopeKey:(NSString *)scopeKey andConstantsBinding:(EXConstantsBinding *)constantsBinding
 {
   if (self = [super init]) {
-    _experienceScopeKey = experienceScopeKey;
+    _scopeKey = scopeKey;
     _constantsBinding = constantsBinding;
   }
   return self;
@@ -46,7 +46,7 @@
     return [[self class] permissionStringForStatus:EXPermissionStatusGranted];
   }
   
-  return [[self class] permissionStringForStatus:[_permissionsService getPermission:permissionType forExperience:_experienceScopeKey]];
+  return [[self class] permissionStringForStatus:[_permissionsService getPermission:permissionType forExperience:_scopeKey]];
 }
 
 - (BOOL)hasGrantedScopedPermission:(NSString *)permissionType
@@ -55,7 +55,7 @@
     return YES;
   }
   
-  return [_permissionsService getPermission:permissionType forExperience:_experienceScopeKey] == EXPermissionStatusGranted;
+  return [_permissionsService getPermission:permissionType forExperience:_scopeKey] == EXPermissionStatusGranted;
 }
 
 - (void)askForPermissionUsingRequesterClass:(Class)requesterClass
@@ -72,7 +72,7 @@
       UM_ENSURE_STRONGIFY(self)
       // if permission should be scoped save it
       if ([self shouldVerifyScopedPermission:permissionType]) {
-        [self.permissionsService savePermission:permission ofType:permissionType forExperience:self.experienceScopeKey];
+        [self.permissionsService savePermission:permission ofType:permissionType forExperience:self.scopeKey];
       }
       resolve(permission);
     };
@@ -86,7 +86,7 @@
       UM_ENSURE_STRONGIFY(self);
       NSMutableDictionary *permission = [globalPermissions mutableCopy];
       // try to save scoped permissions - if fails than permission is denied
-      if (![self.permissionsService savePermission:permission ofType:permissionType forExperience:self.experienceScopeKey]) {
+      if (![self.permissionsService savePermission:permission ofType:permissionType forExperience:self.scopeKey]) {
         permission[@"status"] = [[self class] permissionStringForStatus:EXPermissionStatusDenied];
         permission[@"granted"] = @(NO);
       }
@@ -129,7 +129,7 @@
                    withAllowAction:(UIAlertAction *)allow
                     withDenyAction:(UIAlertAction *)deny
 {
-  NSString *experienceName = self.experienceScopeKey; // TODO: we might want to use name from the manifest?
+  NSString *experienceName = self.scopeKey; // TODO: we might want to use name from the manifest?
   NSString *messageTemplate = @"%1$@ needs permissions for %2$@. You\'ve already granted permission to another Expo experience. Allow %1$@ to also use it?";
   NSString *permissionString = [[self class] textForPermissionType:permissionType];
 

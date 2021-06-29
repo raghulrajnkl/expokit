@@ -12,7 +12,7 @@
   NSDictionary* _protectedAppNames;
 }
 
-- (instancetype)initWithExperienceScopeKey:(NSString *)experienceScopeKey andConstantsBinding:(ABI39_0_0EXConstantsBinding *)constantsBinding
+- (instancetype)initWithScopeKey:(NSString *)scopeKey andConstantsBinding:(ABI39_0_0EXConstantsBinding *)constantsBinding
 {
   if (![@"expo" isEqualToString:constantsBinding.appOwnership]) {
     return [super init];
@@ -33,8 +33,8 @@
   if ([FIRApp defaultApp]) [protectedAppNames setValue:@YES forKey:[FIRApp defaultApp].name];
 
   // Determine project app name & options
-  NSString *encodedExperienceScopeKey = [self.class encodedResourceName:experienceScopeKey];
-  NSString* appName = [NSString stringWithFormat:@"__sandbox_%@", encodedExperienceScopeKey];
+  NSString *encodedScopeKey = [self.class encodedResourceName:scopeKey];
+  NSString* appName = [NSString stringWithFormat:@"__sandbox_%@", encodedScopeKey];
   NSDictionary* googleServicesFile = [self.class googleServicesFileFromConstantsManifest:constantsBinding];
   FIROptions* options = [self.class optionsWithGoogleServicesFile:googleServicesFile];
 

@@ -104,9 +104,9 @@ NS_ASSUME_NONNULL_BEGIN
   [[self _getHomeAppManager] addHistoryItemWithUrl:manifestUrl manifest:manifest];
 }
 
-- (void)getHistoryUrlForExperienceScopeKey:(NSString *)experienceScopeKey completion:(void (^)(NSString *))completion
+- (void)getHistoryUrlForScopeKey:(NSString *)scopeKey completion:(void (^)(NSString *))completion
 {
-  return [[self _getHomeAppManager] getHistoryUrlForExperienceScopeKey:experienceScopeKey completion:completion];
+  return [[self _getHomeAppManager] getHistoryUrlForScopeKey:scopeKey completion:completion];
 }
 
 - (void)setIsNuxFinished:(BOOL)isFinished

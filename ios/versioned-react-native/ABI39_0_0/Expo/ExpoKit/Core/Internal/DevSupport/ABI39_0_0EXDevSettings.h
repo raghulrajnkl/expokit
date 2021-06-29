@@ -5,7 +5,7 @@
 @interface ABI39_0_0EXDevSettings : ABI39_0_0RCTDevSettings
 
 - (instancetype)init NS_UNAVAILABLE;
-- (instancetype)initWithExperienceScopeKey:(NSString *)experienceScopeKey
+- (instancetype)initWithScopeKey:(NSString *)scopeKey
                              isDevelopment:(BOOL)isDevelopment NS_DESIGNATED_INITIALIZER;
 
 @end

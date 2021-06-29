@@ -6,9 +6,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ABI39_0_0EXScopedNotificationsUtils : NSObject
 
-+ (BOOL)shouldNotificationRequest:(UNNotificationRequest *)request beHandledByExperience:(NSString *)experienceScopeKey;
++ (BOOL)shouldNotificationRequest:(UNNotificationRequest *)request beHandledByExperience:(NSString *)scopeKey;
 
-+ (BOOL)shouldNotification:(UNNotification *)notification beHandledByExperience:(NSString *)experienceScopeKey;
++ (BOOL)shouldNotification:(UNNotification *)notification beHandledByExperience:(NSString *)scopeKey;
 
 @end
 

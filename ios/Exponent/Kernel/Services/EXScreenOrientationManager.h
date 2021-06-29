@@ -8,9 +8,9 @@ didChangeSupportedInterfaceOrientations:(UIInterfaceOrientationMask)supportedInt
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientationsForVisibleApp;
 
-- (void)removeOrientationChangeListenerForExperienceScopeKey:(nonnull NSString *)experienceScopeKey;
+- (void)removeOrientationChangeListenerForScopeKey:(nonnull NSString *)scopeKey;
 
-- (void)addOrientationChangeListenerForExperienceScopeKey:(nonnull NSString *)experienceScopeKey subscriberModule:(nonnull id)subscriberModule;
+- (void)addOrientationChangeListenerForScopeKey:(nonnull NSString *)scopeKey subscriberModule:(nonnull id)subscriberModule;
 
 - (nullable UITraitCollection *)getTraitCollection;
 
@@ -28,7 +28,7 @@ didChangeSupportedInterfaceOrientations:(UIInterfaceOrientationMask)supportedInt
 
 @property (nonatomic, assign) UIInterfaceOrientationMask supportedInterfaceOrientationsForVisibleApp;
 
-- (void)setSupportInterfaceOrientations:(UIInterfaceOrientationMask)supportedInterfaceOrientations forExperienceScopeKey:(nullable NSString *)scopeKey;
+- (void)setSupportInterfaceOrientations:(UIInterfaceOrientationMask)supportedInterfaceOrientations forScopeKey:(nullable NSString *)scopeKey;
 
 - (void)handleScreenOrientationChange:(nullable UITraitCollection *)traitCollection;
 

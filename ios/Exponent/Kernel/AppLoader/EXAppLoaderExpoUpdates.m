@@ -184,7 +184,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
   [self _setShouldShowRemoteUpdateStatus:update.rawManifest];
   // if cached manifest was dev mode, or a previous run of this app failed due to a loading error, we want to make sure to check for remote updates
-  if (update.rawManifest.isUsingDeveloperTool || [[EXKernel sharedInstance].serviceRegistry.errorRecoveryManager experienceScopeKeyIsRecoveringFromError:update.rawManifest.scopeKey]) {
+  if (update.rawManifest.isUsingDeveloperTool || [[EXKernel sharedInstance].serviceRegistry.errorRecoveryManager scopeKeyIsRecoveringFromError:update.rawManifest.scopeKey]) {
     return NO;
   }
   return YES;

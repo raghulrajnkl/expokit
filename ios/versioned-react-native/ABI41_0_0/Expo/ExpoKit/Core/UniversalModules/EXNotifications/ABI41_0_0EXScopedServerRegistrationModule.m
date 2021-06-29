@@ -16,23 +16,23 @@ static NSString * const kEXRegistrationInfoKey = @"EXNotificationRegistrationInf
 
 @interface ABI41_0_0EXScopedServerRegistrationModule ()
 
-@property (nonatomic, strong) NSString *experienceScopeKey;
+@property (nonatomic, strong) NSString *scopeKey;
 
 @end
 
 @implementation ABI41_0_0EXScopedServerRegistrationModule
 
-- (instancetype)initWithExperienceScopeKey:(NSString *)experienceScopeKey
+- (instancetype)initWithScopeKey:(NSString *)scopeKey
 {
   if (self = [super init]) {
-    _experienceScopeKey = experienceScopeKey;
+    _scopeKey = scopeKey;
   }
   return self;
 }
 
 - (NSDictionary *)registrationSearchQueryMerging:(NSDictionary *)dictionaryToMerge
 {
-  NSString *scopedKey = [kEXRegistrationInfoKey stringByAppendingFormat:@"-%@", _experienceScopeKey];
+  NSString *scopedKey = [kEXRegistrationInfoKey stringByAppendingFormat:@"-%@", _scopeKey];
   return [self keychainSearchQueryFor:scopedKey merging:dictionaryToMerge];
 }
 

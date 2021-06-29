@@ -308,7 +308,7 @@ ABI40_0_0RCT_EXTERN NSDictionary<NSString *, NSDictionary *> *ABI40_0_0EXGetScop
   if (params[@"browserModuleClass"]) {
     Class browserModuleClass = params[@"browserModuleClass"];
     id homeModule = [[browserModuleClass alloc] initWithExperienceStableLegacyId:self.manifest.stableLegacyId
-                                                              experienceScopeKey:self.manifest.scopeKey
+                                                              scopeKey:self.manifest.scopeKey
                                                            kernelServiceDelegate:services[@"EXHomeModuleManager"]
                                                                    params:params];
     [extraModules addObject:homeModule];
@@ -327,7 +327,7 @@ ABI40_0_0RCT_EXTERN NSDictionary<NSString *, NSDictionary *> *ABI40_0_0EXGetScop
   ABI40_0_0EXScopedModuleRegistryAdapter *moduleRegistryAdapter = [[ABI40_0_0EXScopedModuleRegistryAdapter alloc] initWithModuleRegistryProvider:moduleRegistryProvider];
   ABI40_0_0UMModuleRegistry *moduleRegistry = [moduleRegistryAdapter moduleRegistryForParams:params
                                                         forExperienceStableLegacyId:self.manifest.stableLegacyId
-                                                                 experienceScopeKey:self.manifest.scopeKey
+                                                                 scopeKey:self.manifest.scopeKey
                                                                  withKernelServices:services];
   NSArray<id<ABI40_0_0RCTBridgeModule>> *expoModules = [moduleRegistryAdapter extraModulesForModuleRegistry:moduleRegistry];
   [extraModules addObjectsFromArray:expoModules];
@@ -363,17 +363,17 @@ ABI40_0_0RCT_EXTERN NSDictionary<NSString *, NSDictionary *> *ABI40_0_0EXGetScop
       Class scopedModuleClass = NSClassFromString(scopedModuleClassName);
       if (moduleServices.count > 1) {
         scopedModule = [[scopedModuleClass alloc] initWithExperienceStableLegacyId:self.manifest.stableLegacyId
-                                                                experienceScopeKey:self.manifest.scopeKey
+                                                                scopeKey:self.manifest.scopeKey
                                                             kernelServiceDelegates:moduleServices
                                                                             params:params];
       } else if (moduleServices.count == 0) {
         scopedModule = [[scopedModuleClass alloc] initWithExperienceStableLegacyId:self.manifest.stableLegacyId
-                                                                experienceScopeKey:self.manifest.scopeKey
+                                                                scopeKey:self.manifest.scopeKey
                                                              kernelServiceDelegate:nil
                                                                             params:params];
       } else {
         scopedModule = [[scopedModuleClass alloc] initWithExperienceStableLegacyId:self.manifest.stableLegacyId
-                                                                experienceScopeKey:self.manifest.scopeKey
+                                                                scopeKey:self.manifest.scopeKey
                                                              kernelServiceDelegate:moduleServices[[moduleServices allKeys][0]]
                                                                             params:params];
       }
@@ -438,7 +438,7 @@ ABI40_0_0RCT_EXTERN NSDictionary<NSString *, NSDictionary *> *ABI40_0_0EXGetScop
   // Expo-specific
   if (moduleClass == ABI40_0_0EXDevSettings.class) {
     BOOL isDevelopment = ![self _isOpeningHomeInProductionMode] && [_params[@"isDeveloper"] boolValue];
-    return [[moduleClass alloc] initWithExperienceScopeKey:self.manifest.scopeKey isDevelopment:isDevelopment];
+    return [[moduleClass alloc] initWithScopeKey:self.manifest.scopeKey isDevelopment:isDevelopment];
   } else if (moduleClass == ABI40_0_0RCTExceptionsManagerCls()) {
     id exceptionsManagerDelegate = _params[@"exceptionsManagerDelegate"];
     if (exceptionsManagerDelegate) {

@@ -27,12 +27,12 @@ static NSString * const scopedIdentifierSeparator = @":";
 
 # pragma mark - EXNotificationsIdentifiersManager
 
-- (NSString *)internalIdForIdentifier:(NSString *)identifier experienceScopeKey:(nonnull NSString *)experienceScopeKey
+- (NSString *)internalIdForIdentifier:(NSString *)identifier scopeKey:(nonnull NSString *)scopeKey
 {
   if ([EXEnvironment sharedEnvironment].isDetached) {
     return identifier;
   }
-  return [NSString stringWithFormat:@"%@%@%@", experienceScopeKey, scopedIdentifierSeparator, identifier];
+  return [NSString stringWithFormat:@"%@%@%@", scopeKey, scopedIdentifierSeparator, identifier];
 }
 
 - (NSString *)exportedIdForInternalIdentifier:(NSString *)identifier

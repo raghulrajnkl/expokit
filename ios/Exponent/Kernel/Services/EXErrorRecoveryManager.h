@@ -21,14 +21,14 @@
  *  Associate arbitrary developer info with this experience id. If the experience recovers from an
  *  error, we can pass this info to the new instance of the experience.
  */
-- (void)setDeveloperInfo:(NSDictionary *)developerInfo forExperienceScopeKey:(NSString *)scopeKey;
-- (NSDictionary *)developerInfoForExperienceScopeKey: (NSString *)scopeKey;
+- (void)setDeveloperInfo:(NSDictionary *)developerInfo forScopeKey:(NSString *)scopeKey;
+- (NSDictionary *)developerInfoForScopeKey: (NSString *)scopeKey;
 
 /**
  *  Associate an error with an experience id. This will never be cleared until the next
  *  call to `experienceFinishedLoadingWithId:`.
  */
-- (void)setError: (NSError *)error forExperienceScopeKey:(NSString *)scopeKey;
+- (void)setError: (NSError *)error forScopeKey:(NSString *)scopeKey;
 
 /**
  *  Indicate that a JS bundle has successfully loaded for this experience.
@@ -39,7 +39,7 @@
  *  True if any bridge for this experience had an error, and has not successfully loaded
  *  since the error was reported.
  */
-- (BOOL)experienceScopeKeyIsRecoveringFromError:(NSString *)scopeKey;
+- (BOOL)scopeKeyIsRecoveringFromError:(NSString *)scopeKey;
 
 /**
  *  True if this error object (by `isEqual:`) has been registered for any experience.

@@ -74,10 +74,10 @@ NSString *kEXHomeManifestResourceName = @"kernel-manifest";
   [self _dispatchHomeJSEvent:@"addHistoryItem" body:params onSuccess:nil onFailure:nil];
 }
 
-- (void)getHistoryUrlForExperienceScopeKey:(NSString *)experienceScopeKey completion:(void (^)(NSString *))completion
+- (void)getHistoryUrlForScopeKey:(NSString *)scopeKey completion:(void (^)(NSString *))completion
 {
   [self _dispatchHomeJSEvent:@"getHistoryUrlForExperienceId"
-                        body:@{ @"experienceId": experienceScopeKey }
+                        body:@{ @"experienceId": scopeKey }
                    onSuccess:^(NSDictionary *result) {
                      NSString *url = result[@"url"];
                      completion(url);

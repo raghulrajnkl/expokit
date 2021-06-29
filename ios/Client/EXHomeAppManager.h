@@ -11,7 +11,7 @@ FOUNDATION_EXPORT NSString *kEXHomeManifestResourceName;
 #pragma mark - interfacing with home JS
 
 - (void)addHistoryItemWithUrl:(NSURL *)manifestUrl manifest:(EXUpdatesRawManifest *)manifest;
-- (void)getHistoryUrlForExperienceScopeKey:(NSString *)experienceScopeKey completion:(void (^)(NSString *))completion;
+- (void)getHistoryUrlForScopeKey:(NSString *)scopeKey completion:(void (^)(NSString *))completion;
 - (void)showQRReader;
 
 @end

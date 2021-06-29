@@ -348,7 +348,7 @@ ABI41_0_0RCT_EXTERN void ABI41_0_0EXRegisterScopedModule(Class, ...);
   if (params[@"browserModuleClass"]) {
     Class browserModuleClass = params[@"browserModuleClass"];
     id homeModule = [[browserModuleClass alloc] initWithExperienceStableLegacyId:self.manifest.stableLegacyId
-                                                              experienceScopeKey:self.manifest.scopeKey
+                                                              scopeKey:self.manifest.scopeKey
                                                            kernelServiceDelegate:services[@"EXHomeModuleManager"]
                                                                    params:params];
     [extraModules addObject:homeModule];
@@ -367,7 +367,7 @@ ABI41_0_0RCT_EXTERN void ABI41_0_0EXRegisterScopedModule(Class, ...);
   ABI41_0_0EXScopedModuleRegistryAdapter *moduleRegistryAdapter = [[ABI41_0_0EXScopedModuleRegistryAdapter alloc] initWithModuleRegistryProvider:moduleRegistryProvider];
   ABI41_0_0UMModuleRegistry *moduleRegistry = [moduleRegistryAdapter moduleRegistryForParams:params
                                                         forExperienceStableLegacyId:self.manifest.stableLegacyId
-                                                                 experienceScopeKey:self.manifest.scopeKey
+                                                                 scopeKey:self.manifest.scopeKey
                                                                  withKernelServices:services];
   NSArray<id<ABI41_0_0RCTBridgeModule>> *expoModules = [moduleRegistryAdapter extraModulesForModuleRegistry:moduleRegistry];
   [extraModules addObjectsFromArray:expoModules];
@@ -403,17 +403,17 @@ ABI41_0_0RCT_EXTERN void ABI41_0_0EXRegisterScopedModule(Class, ...);
       Class scopedModuleClass = NSClassFromString(scopedModuleClassName);
       if (moduleServices.count > 1) {
         scopedModule = [[scopedModuleClass alloc] initWithExperienceStableLegacyId:self.manifest.stableLegacyId
-                                                                experienceScopeKey:self.manifest.scopeKey
+                                                                scopeKey:self.manifest.scopeKey
                                                             kernelServiceDelegates:moduleServices
                                                                             params:params];
       } else if (moduleServices.count == 0) {
         scopedModule = [[scopedModuleClass alloc] initWithExperienceStableLegacyId:self.manifest.stableLegacyId
-                                                                experienceScopeKey:self.manifest.scopeKey
+                                                                scopeKey:self.manifest.scopeKey
                                                              kernelServiceDelegate:nil
                                                                             params:params];
       } else {
         scopedModule = [[scopedModuleClass alloc] initWithExperienceStableLegacyId:self.manifest.stableLegacyId
-                                                                experienceScopeKey:self.manifest.scopeKey
+                                                                scopeKey:self.manifest.scopeKey
                                                              kernelServiceDelegate:moduleServices[[moduleServices allKeys][0]]
                                                                             params:params];
       }
@@ -478,7 +478,7 @@ ABI41_0_0RCT_EXTERN void ABI41_0_0EXRegisterScopedModule(Class, ...);
   // Expo-specific
   if (moduleClass == ABI41_0_0EXDevSettings.class) {
     BOOL isDevelopment = ![self _isOpeningHomeInProductionMode] && [_params[@"isDeveloper"] boolValue];
-    return [[moduleClass alloc] initWithExperienceScopeKey:self.manifest.scopeKey isDevelopment:isDevelopment];
+    return [[moduleClass alloc] initWithScopeKey:self.manifest.scopeKey isDevelopment:isDevelopment];
   } else if (moduleClass == ABI41_0_0RCTExceptionsManagerCls()) {
     id exceptionsManagerDelegate = _params[@"exceptionsManagerDelegate"];
     if (exceptionsManagerDelegate) {

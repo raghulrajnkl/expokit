@@ -7,16 +7,16 @@
 
 @interface ABI41_0_0EXScopedNotificationSchedulerModule ()
 
-@property (nonatomic, strong) NSString *experienceScopeKey;
+@property (nonatomic, strong) NSString *scopeKey;
 
 @end
 
 @implementation ABI41_0_0EXScopedNotificationSchedulerModule
 
-- (instancetype)initWithExperienceScopeKey:(NSString *)experienceScopeKey
+- (instancetype)initWithScopeKey:(NSString *)scopeKey
 {
   if (self = [super init]) {
-    _experienceScopeKey = experienceScopeKey;
+    _scopeKey = scopeKey;
   }
 
   return self;
@@ -27,7 +27,7 @@
                                                           trigger:(NSDictionary *)triggerInput
 {
   NSString *scopedIdentifier = [ABI41_0_0EXScopedNotificationsUtils scopedIdentifierFromId:identifier
-                                                                    forExperience:_experienceScopeKey];
+                                                                    forExperience:_scopeKey];
   return [super buildNotificationRequestWithIdentifier:scopedIdentifier content:contentInput trigger:triggerInput];
 }
 
@@ -35,7 +35,7 @@
 {
   NSMutableArray *serializedRequests = [NSMutableArray new];
   for (UNNotificationRequest *request in requests) {
-    if ([ABI41_0_0EXScopedNotificationsUtils isId:request.identifier scopedByExperience:_experienceScopeKey]) {
+    if ([ABI41_0_0EXScopedNotificationsUtils isId:request.identifier scopedByExperience:_scopeKey]) {
       [serializedRequests addObject:[ABI41_0_0EXScopedNotificationSerializer serializedNotificationRequest:request]];
     }
   }
@@ -46,17 +46,17 @@
 - (void)cancelNotification:(NSString *)identifier resolve:(ABI41_0_0UMPromiseResolveBlock)resolve rejecting:(ABI41_0_0UMPromiseRejectBlock)reject
 {
   NSString *scopedIdentifier = [ABI41_0_0EXScopedNotificationsUtils scopedIdentifierFromId:identifier
-                                                                    forExperience:_experienceScopeKey];
+                                                                    forExperience:_scopeKey];
   [super cancelNotification:scopedIdentifier resolve:resolve rejecting:reject];
 }
 
 - (void)cancelAllNotificationsWithResolver:(ABI41_0_0UMPromiseResolveBlock)resolve rejecting:(ABI41_0_0UMPromiseRejectBlock)reject
 {
-  __block NSString *experienceScopeKey = _experienceScopeKey;
+  __block NSString *scopeKey = _scopeKey;
   [[UNUserNotificationCenter currentNotificationCenter] getPendingNotificationRequestsWithCompletionHandler:^(NSArray<UNNotificationRequest *> * _Nonnull requests) {
     NSMutableArray<NSString *> *toRemove = [NSMutableArray new];
     for (UNNotificationRequest *request in requests) {
-      if ([ABI41_0_0EXScopedNotificationsUtils isId:request.identifier scopedByExperience:experienceScopeKey]) {
+      if ([ABI41_0_0EXScopedNotificationsUtils isId:request.identifier scopedByExperience:scopeKey]) {
         [toRemove addObject:request.identifier];
       }
     }

@@ -39,13 +39,13 @@
 
 - (ABI41_0_0UMModuleRegistry *)moduleRegistryForParams:(NSDictionary *)params
                   forExperienceStableLegacyId:(NSString *)experienceStableLegacyId
-                           experienceScopeKey:(NSString *)experienceScopeKey
+                           scopeKey:(NSString *)scopeKey
                            withKernelServices:(NSDictionary *)kernelServices
 {
   ABI41_0_0UMModuleRegistry *moduleRegistry = [self.moduleRegistryProvider moduleRegistry];
 
 #if __has_include(<ABI41_0_0EXUpdates/ABI41_0_0EXUpdatesService.h>)
-  ABI41_0_0EXUpdatesBinding *updatesBinding = [[ABI41_0_0EXUpdatesBinding alloc] initWithExperienceScopeKey:experienceScopeKey
+  ABI41_0_0EXUpdatesBinding *updatesBinding = [[ABI41_0_0EXUpdatesBinding alloc] initWithScopeKey:scopeKey
                                                                      updatesKernelService:kernelServices[@"EXUpdatesManager"] databaseKernelService:kernelServices[@"EXUpdatesDatabaseManager"]];
   [moduleRegistry registerInternalModule:updatesBinding];
 #endif
@@ -58,7 +58,7 @@
 #if __has_include(<ABI41_0_0EXFacebook/ABI41_0_0EXFacebook.h>)
   // only override in Expo Go
   if ([params[@"constants"][@"appOwnership"] isEqualToString:@"expo"]) {
-    ABI41_0_0EXScopedFacebook *scopedFacebook = [[ABI41_0_0EXScopedFacebook alloc] initWithExperienceScopeKey:experienceScopeKey andParams:params];
+    ABI41_0_0EXScopedFacebook *scopedFacebook = [[ABI41_0_0EXScopedFacebook alloc] initWithScopeKey:scopeKey andParams:params];
     [moduleRegistry registerExportedModule:scopedFacebook];
   }
 #endif
@@ -84,7 +84,7 @@
 #endif
 
 #if __has_include(<ABI41_0_0EXSensors/ABI41_0_0EXSensorsManager.h>)
-  ABI41_0_0EXSensorsManagerBinding *sensorsManagerBinding = [[ABI41_0_0EXSensorsManagerBinding alloc] initWithExperienceScopeKey:experienceScopeKey andKernelService:kernelServices[@"EXSensorManager"]];
+  ABI41_0_0EXSensorsManagerBinding *sensorsManagerBinding = [[ABI41_0_0EXSensorsManagerBinding alloc] initWithScopeKey:scopeKey andKernelService:kernelServices[@"EXSensorManager"]];
   [moduleRegistry registerInternalModule:sensorsManagerBinding];
 #endif
 
@@ -100,7 +100,7 @@
 #endif
 
 #if __has_include(<ABI41_0_0EXSecureStore/ABI41_0_0EXSecureStore.h>)
-  ABI41_0_0EXScopedSecureStore *secureStoreModule = [[ABI41_0_0EXScopedSecureStore alloc] initWithExperienceScopeKey:experienceScopeKey andConstantsBinding:constantsBinding];
+  ABI41_0_0EXScopedSecureStore *secureStoreModule = [[ABI41_0_0EXScopedSecureStore alloc] initWithScopeKey:scopeKey andConstantsBinding:constantsBinding];
   [moduleRegistry registerExportedModule:secureStoreModule];
 #endif
 
@@ -110,7 +110,7 @@
 #endif
 
 #if __has_include(<ABI41_0_0UMReactNativeAdapter/ABI41_0_0EXPermissionsService.h>)
-  ABI41_0_0EXScopedPermissions *permissionsModule = [[ABI41_0_0EXScopedPermissions alloc] initWithExperienceScopeKey:experienceScopeKey andConstantsBinding:constantsBinding];
+  ABI41_0_0EXScopedPermissions *permissionsModule = [[ABI41_0_0EXScopedPermissions alloc] initWithScopeKey:scopeKey andConstantsBinding:constantsBinding];
   [moduleRegistry registerExportedModule:permissionsModule];
   [moduleRegistry registerInternalModule:permissionsModule];
 #endif
@@ -121,7 +121,7 @@
 #endif
 
 #if __has_include(<ABI41_0_0EXBranch/ABI41_0_0RNBranch.h>)
-  ABI41_0_0EXScopedBranch *branchModule = [[ABI41_0_0EXScopedBranch alloc] initWithExperienceScopeKey:experienceScopeKey];
+  ABI41_0_0EXScopedBranch *branchModule = [[ABI41_0_0EXScopedBranch alloc] initWithScopeKey:scopeKey];
   [moduleRegistry registerInternalModule:branchModule];
 #endif
 
@@ -132,18 +132,18 @@
 
 #if __has_include(<ABI41_0_0EXTaskManager/ABI41_0_0EXTaskManager.h>)
   // TODO: Make scoped task manager when adding support for bare ABI41_0_0React Native
-  ABI41_0_0EXTaskManager *taskManagerModule = [[ABI41_0_0EXTaskManager alloc] initWithExperienceScopeKey:experienceScopeKey];
+  ABI41_0_0EXTaskManager *taskManagerModule = [[ABI41_0_0EXTaskManager alloc] initWithScopeKey:scopeKey];
   [moduleRegistry registerInternalModule:taskManagerModule];
   [moduleRegistry registerExportedModule:taskManagerModule];
 #endif
 
 #if __has_include(<ABI41_0_0EXErrorRecovery/ABI41_0_0EXErrorRecoveryModule.h>)
-  ABI41_0_0EXScopedErrorRecoveryModule *errorRecovery = [[ABI41_0_0EXScopedErrorRecoveryModule alloc] initWithExperienceScopeKey:experienceScopeKey];
+  ABI41_0_0EXScopedErrorRecoveryModule *errorRecovery = [[ABI41_0_0EXScopedErrorRecoveryModule alloc] initWithScopeKey:scopeKey];
   [moduleRegistry registerExportedModule:errorRecovery];
 #endif
 
 #if __has_include(<ABI41_0_0EXFirebaseCore/ABI41_0_0EXFirebaseCore.h>)
-  ABI41_0_0EXScopedFirebaseCore *firebaseCoreModule = [[ABI41_0_0EXScopedFirebaseCore alloc] initWithExperienceScopeKey:experienceScopeKey andConstantsBinding:constantsBinding];
+  ABI41_0_0EXScopedFirebaseCore *firebaseCoreModule = [[ABI41_0_0EXScopedFirebaseCore alloc] initWithScopeKey:scopeKey andConstantsBinding:constantsBinding];
   [moduleRegistry registerExportedModule:firebaseCoreModule];
   [moduleRegistry registerInternalModule:firebaseCoreModule];
 #endif
@@ -151,7 +151,7 @@
 #if __has_include(<ABI41_0_0EXNotifications/ABI41_0_0EXNotificationsEmitter.h>)
   // only override in Expo Go
   if ([params[@"constants"][@"appOwnership"] isEqualToString:@"expo"]) {
-    ABI41_0_0EXScopedNotificationsEmitter *notificationsEmmitter = [[ABI41_0_0EXScopedNotificationsEmitter alloc] initWithExperienceScopeKey:experienceScopeKey];
+    ABI41_0_0EXScopedNotificationsEmitter *notificationsEmmitter = [[ABI41_0_0EXScopedNotificationsEmitter alloc] initWithScopeKey:scopeKey];
     [moduleRegistry registerExportedModule:notificationsEmmitter];
   }
 #endif
@@ -159,20 +159,20 @@
 #if __has_include(<ABI41_0_0EXNotifications/ABI41_0_0EXNotificationsHandlerModule.h>)
   // only override in Expo Go
   if ([params[@"constants"][@"appOwnership"] isEqualToString:@"expo"]) {
-    ABI41_0_0EXScopedNotificationsHandlerModule *notificationsHandler = [[ABI41_0_0EXScopedNotificationsHandlerModule alloc] initWithExperienceScopeKey:experienceScopeKey];
+    ABI41_0_0EXScopedNotificationsHandlerModule *notificationsHandler = [[ABI41_0_0EXScopedNotificationsHandlerModule alloc] initWithScopeKey:scopeKey];
     [moduleRegistry registerExportedModule:notificationsHandler];
   }
 #endif
 
 #if __has_include(<ABI41_0_0EXNotifications/ABI41_0_0EXNotificationsHandlerModule.h>)
-  ABI41_0_0EXScopedNotificationBuilder *notificationsBuilder = [[ABI41_0_0EXScopedNotificationBuilder alloc] initWithExperienceScopeKey:experienceScopeKey andConstantsBinding:constantsBinding];
+  ABI41_0_0EXScopedNotificationBuilder *notificationsBuilder = [[ABI41_0_0EXScopedNotificationBuilder alloc] initWithScopeKey:scopeKey andConstantsBinding:constantsBinding];
   [moduleRegistry registerInternalModule:notificationsBuilder];
 #endif
 
 #if __has_include(<ABI41_0_0EXNotifications/ABI41_0_0EXNotificationSchedulerModule.h>)
   // only override in Expo Go
   if ([params[@"constants"][@"appOwnership"] isEqualToString:@"expo"]) {
-    ABI41_0_0EXScopedNotificationSchedulerModule *schedulerModule = [[ABI41_0_0EXScopedNotificationSchedulerModule alloc] initWithExperienceScopeKey:experienceScopeKey];
+    ABI41_0_0EXScopedNotificationSchedulerModule *schedulerModule = [[ABI41_0_0EXScopedNotificationSchedulerModule alloc] initWithScopeKey:scopeKey];
     [moduleRegistry registerExportedModule:schedulerModule];
   }
 #endif
@@ -180,7 +180,7 @@
 #if __has_include(<ABI41_0_0EXNotifications/ABI41_0_0EXNotificationPresentationModule.h>)
   // only override in Expo Go
   if ([params[@"constants"][@"appOwnership"] isEqualToString:@"expo"]) {
-    ABI41_0_0EXScopedNotificationPresentationModule *notificationPresentationModule = [[ABI41_0_0EXScopedNotificationPresentationModule alloc] initWithExperienceScopeKey:experienceScopeKey];
+    ABI41_0_0EXScopedNotificationPresentationModule *notificationPresentationModule = [[ABI41_0_0EXScopedNotificationPresentationModule alloc] initWithScopeKey:scopeKey];
     [moduleRegistry registerExportedModule:notificationPresentationModule];
   }
 #endif
@@ -188,16 +188,16 @@
 #if __has_include(<ABI41_0_0EXNotifications/ABI41_0_0EXNotificationCategoriesModule.h>)
   // only override in Expo Go
   if ([params[@"constants"][@"appOwnership"] isEqualToString:@"expo"]) {
-    ABI41_0_0EXScopedNotificationCategoriesModule *scopedCategoriesModule = [[ABI41_0_0EXScopedNotificationCategoriesModule alloc] initWithExperienceScopeKey:experienceScopeKey andConstantsBinding:constantsBinding];
+    ABI41_0_0EXScopedNotificationCategoriesModule *scopedCategoriesModule = [[ABI41_0_0EXScopedNotificationCategoriesModule alloc] initWithScopeKey:scopeKey andConstantsBinding:constantsBinding];
     [moduleRegistry registerExportedModule:scopedCategoriesModule];
   }
   [ABI41_0_0EXScopedNotificationCategoriesModule maybeMigrateLegacyCategoryIdentifiersForProjectWithExperienceStableLegacyId:experienceStableLegacyId
-                                                                                                 experienceScopeKey:experienceScopeKey
+                                                                                                 scopeKey:scopeKey
                                                                              isInExpoGo:[params[@"constants"][@"appOwnership"] isEqualToString:@"expo"]];
 #endif
 
 #if __has_include(<ABI41_0_0EXNotifications/ABI41_0_0EXServerRegistrationModule.h>)
-  ABI41_0_0EXScopedServerRegistrationModule *serverRegistrationModule = [[ABI41_0_0EXScopedServerRegistrationModule alloc] initWithExperienceScopeKey:experienceScopeKey];
+  ABI41_0_0EXScopedServerRegistrationModule *serverRegistrationModule = [[ABI41_0_0EXScopedServerRegistrationModule alloc] initWithScopeKey:scopeKey];
   [moduleRegistry registerExportedModule:serverRegistrationModule];
 #endif
 
